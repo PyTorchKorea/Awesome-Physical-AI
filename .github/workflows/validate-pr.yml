@@ -1,0 +1,27 @@
+name: Validate Data on PR
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate YAML schema
+        run: python scripts/validate_data.py
+
+      - name: Dry-run site generation
+        run: python scripts/generate_site.py

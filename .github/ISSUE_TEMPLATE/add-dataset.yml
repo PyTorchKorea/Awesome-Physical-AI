@@ -1,0 +1,184 @@
+name: "Add a Dataset"
+description: "Submit a new Physical AI / Robotics dataset for inclusion"
+title: "[Dataset] "
+labels: ["add-dataset"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 새 데이터셋 추가 | Add a New Dataset
+        양식을 작성해 주세요. 이슈 등록 후 봇이 자동으로 PR을 생성합니다.
+        Please fill in the form. A bot will create a PR automatically.
+
+  - type: input
+    id: id
+    attributes:
+      label: "ID (slug)"
+      description: "고유 식별자 (소문자, 하이픈만 사용) | Unique identifier (lowercase, hyphens only)"
+      placeholder: "e.g. my-robot-dataset"
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: "Name"
+      placeholder: "e.g. MyRobotDataset"
+    validations:
+      required: true
+
+  - type: input
+    id: organization
+    attributes:
+      label: "Organization"
+      placeholder: "e.g. UC Berkeley"
+    validations:
+      required: true
+
+  - type: input
+    id: year
+    attributes:
+      label: "Year"
+      placeholder: "e.g. 2024"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description_en
+    attributes:
+      label: "Description (English)"
+      placeholder: "A dataset of..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: description_ko
+    attributes:
+      label: "Description (Korean)"
+      placeholder: "로봇 데이터셋으로..."
+    validations:
+      required: false
+
+  - type: input
+    id: github_url
+    attributes:
+      label: "GitHub URL"
+      placeholder: "https://github.com/org/repo"
+
+  - type: input
+    id: paper_url
+    attributes:
+      label: "Paper URL (arXiv)"
+      placeholder: "https://arxiv.org/abs/xxxx.xxxxx"
+
+  - type: input
+    id: huggingface_url
+    attributes:
+      label: "HuggingFace URL"
+      placeholder: "https://huggingface.co/datasets/org/name"
+
+  - type: input
+    id: project_page_url
+    attributes:
+      label: "Project Page URL"
+      placeholder: "https://mydataset.github.io"
+
+  - type: checkboxes
+    id: categories
+    attributes:
+      label: "Categories"
+      options:
+        - label: "manipulation"
+        - label: "locomotion"
+        - label: "navigation"
+        - label: "dexterous"
+        - label: "whole-body"
+        - label: "aerial"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: hardware_targets
+    attributes:
+      label: "Hardware Targets"
+      options:
+        - label: "manipulator"
+        - label: "humanoid"
+        - label: "quadruped"
+        - label: "biped"
+        - label: "mobile"
+        - label: "drone"
+        - label: "hand"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: data_source
+    attributes:
+      label: "Data Source"
+      options:
+        - label: "real"
+        - label: "simulation"
+        - label: "teleoperation"
+        - label: "human_demo"
+        - label: "mocap"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: modality
+    attributes:
+      label: "Modality"
+      options:
+        - label: "rgb"
+        - label: "rgbd"
+        - label: "depth"
+        - label: "lidar"
+        - label: "tactile"
+        - label: "proprioception"
+        - label: "audio"
+        - label: "force_torque"
+    validations:
+      required: true
+
+  - type: input
+    id: number_of_trajectories
+    attributes:
+      label: "Number of Trajectories"
+      placeholder: "e.g. 50000"
+
+  - type: input
+    id: total_hours
+    attributes:
+      label: "Total Hours of Data"
+      placeholder: "e.g. 200"
+
+  - type: input
+    id: number_of_environments
+    attributes:
+      label: "Number of Environments / Tasks"
+      placeholder: "e.g. 24"
+
+  - type: input
+    id: number_of_robot_types
+    attributes:
+      label: "Number of Robot Types"
+      placeholder: "e.g. 3"
+
+  - type: input
+    id: tags
+    attributes:
+      label: "Tags (optional)"
+      placeholder: "e.g. large-scale, multi-robot, in-the-wild"
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "The dataset is publicly available"
+          required: true
+        - label: "At least one URL (GitHub, paper, or HuggingFace) is provided"
+          required: true
+        - label: "I have read the contribution guidelines"
+          required: true

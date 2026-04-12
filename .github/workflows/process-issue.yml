@@ -1,0 +1,81 @@
+name: Process New Entry Issue
+
+on:
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  process:
+    # Only run for issues using our "Add Model" or "Add Dataset" templates
+    if: |
+      contains(github.event.issue.labels.*.name, 'add-model') ||
+      contains(github.event.issue.labels.*.name, 'add-dataset')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Determine entry type from label
+        id: type
+        run: |
+          LABELS='${{ toJson(github.event.issue.labels.*.name) }}'
+          if echo "$LABELS" | grep -q "add-model"; then
+            echo "issue_type=model" >> $GITHUB_OUTPUT
+          else
+            echo "issue_type=dataset" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Parse issue and append entry
+        env:
+          ISSUE_BODY:   ${{ github.event.issue.body }}
+          ISSUE_TYPE:   ${{ steps.type.outputs.issue_type }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
+        run: python scripts/process_issue.py
+
+      - name: Regenerate site data
+        run: python scripts/generate_site.py
+
+      - name: Create branch and pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="add-entry/issue-${{ github.event.issue.number }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add data/ docs/data.json README.md
+          git commit -m "feat: add entry from issue #${{ github.event.issue.number }}"
+          git push origin "$BRANCH"
+          gh pr create \
+            --title "Add entry: ${{ github.event.issue.title }}" \
+            --body "Resolves #${{ github.event.issue.number }}
+
+Auto-generated from issue by @${{ github.event.issue.user.login }}.
+
+**Please review the entry before merging.**" \
+            --head "$BRANCH" \
+            --base main \
+            --label "review-needed"
+
+      - name: Comment on issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} \
+            --body "✅ 감사합니다! PR이 자동으로 생성되었습니다. 관리자 검토 후 머지됩니다.
+
+Thanks! A PR has been automatically created from this issue and is pending admin review."

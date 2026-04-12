@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko" x-data="app()" x-init="init()" :class="{ dark: darkMode }">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awesome Physical AI</title>
+  <meta name="description" content="Physical AI (Robotics & Embodied AI) 오픈소스 모델 및 데이터셋 큐레이션 대시보드" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    [x-cloak] { display: none !important; }
+
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+    .card-enter { animation: fadeUp 0.25s ease forwards; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 9999px;
+      font-size: 0.68rem;
+      font-weight: 500;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 3px; }
+
+    .filter-pill {
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-pill:hover { transform: translateY(-1px); }
+  </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-200">
+
+<!-- ═══════════════════════════════════ HEADER ═══════════════════════════════════ -->
+<header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-gray-200 dark:border-gray-800">
+  <div class="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
+    <!-- Logo -->
+    <a href="https://github.com/PyTorchKR/Awesome-Physical-AI" target="_blank"
+       class="flex items-center gap-2 font-bold text-lg shrink-0">
+      <span class="text-2xl">🤖</span>
+      <span class="hidden sm:inline">Awesome <span class="text-brand-500">Physical AI</span></span>
+    </a>
+
+    <!-- Search -->
+    <div class="relative flex-1 max-w-md">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
+      <input
+        x-model="search"
+        type="text"
+        :placeholder="lang === 'ko' ? '모델, 기관, 태그 검색...' : 'Search models, orgs, tags...'"
+        class="w-full pl-9 pr-4 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700
+               bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+    </div>
+
+    <div class="flex items-center gap-2 ml-auto shrink-0">
+      <!-- Language toggle -->
+      <button @click="lang = lang === 'ko' ? 'en' : 'ko'"
+              class="text-xs px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700
+                     hover:bg-gray-100 dark:hover:bg-gray-800 font-medium transition-colors">
+        <span x-text="lang === 'ko' ? 'EN' : '한'"></span>
+      </button>
+
+      <!-- Dark mode -->
+      <button @click="darkMode = !darkMode"
+              class="text-lg p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        <span x-text="darkMode ? '☀️' : '🌙'"></span>
+      </button>
+
+      <!-- GitHub -->
+      <a href="https://github.com/PyTorchKR/Awesome-Physical-AI" target="_blank"
+         class="text-sm px-3 py-1.5 rounded-lg bg-gray-900 dark:bg-gray-700 text-white
+                hover:bg-gray-700 dark:hover:bg-gray-600 transition-colors flex items-center gap-1.5">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483
+                   0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466
+                   -.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832
+                   .092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688
+                   -.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004
+                   1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651
+                   .64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855
+                   0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017
+                   C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════ HERO STATS ═══════════════════════════════════ -->
+<section class="bg-gradient-to-br from-brand-600 via-brand-500 to-purple-600 text-white py-10 px-4">
+  <div class="max-w-7xl mx-auto">
+    <p class="text-brand-100 text-sm mb-1 font-medium" x-text="lang === 'ko' ? '마지막 업데이트: ' + metadata.last_updated : 'Last updated: ' + metadata.last_updated"></p>
+    <h1 class="text-2xl sm:text-3xl font-bold mb-6"
+        x-text="lang === 'ko' ? '🤖 Physical AI 오픈소스 인덱스' : '🤖 Physical AI Open-Source Index'"></h1>
+
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="bg-white/15 rounded-xl p-4 backdrop-blur">
+        <div class="text-3xl font-black" x-text="metadata.total_models"></div>
+        <div class="text-brand-100 text-sm mt-1" x-text="lang === 'ko' ? '오픈소스 모델' : 'Open-Source Models'"></div>
+      </div>
+      <div class="bg-white/15 rounded-xl p-4 backdrop-blur">
+        <div class="text-3xl font-black" x-text="metadata.total_datasets"></div>
+        <div class="text-brand-100 text-sm mt-1" x-text="lang === 'ko' ? '데이터셋' : 'Datasets'"></div>
+      </div>
+      <div class="bg-white/15 rounded-xl p-4 backdrop-blur">
+        <div class="text-3xl font-black" x-text="metadata.total_orgs"></div>
+        <div class="text-brand-100 text-sm mt-1" x-text="lang === 'ko' ? '기관 / 회사' : 'Organizations'"></div>
+      </div>
+      <div class="bg-white/15 rounded-xl p-4 backdrop-blur">
+        <div class="text-3xl font-black" x-text="totalStars >= 1000 ? Math.round(totalStars/1000) + 'k' : totalStars"></div>
+        <div class="text-brand-100 text-sm mt-1" x-text="lang === 'ko' ? '총 GitHub 스타' : 'Total GitHub Stars'"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ MAIN ═══════════════════════════════════ -->
+<main class="max-w-7xl mx-auto px-4 py-8">
+
+  <!-- Tab: Models / Datasets -->
+  <div class="flex gap-2 mb-6">
+    <button @click="activeTab = 'models'"
+            :class="activeTab === 'models'
+              ? 'bg-brand-500 text-white'
+              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+            class="px-5 py-2 rounded-lg font-semibold text-sm transition-all">
+      🤖 <span x-text="lang === 'ko' ? '모델' : 'Models'"></span>
+      <span class="ml-1.5 text-xs opacity-75" x-text="'(' + filteredModels.length + ')'"></span>
+    </button>
+    <button @click="activeTab = 'datasets'"
+            :class="activeTab === 'datasets'
+              ? 'bg-green-600 text-white'
+              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'"
+            class="px-5 py-2 rounded-lg font-semibold text-sm transition-all">
+      📦 <span x-text="lang === 'ko' ? '데이터셋' : 'Datasets'"></span>
+      <span class="ml-1.5 text-xs opacity-75" x-text="'(' + filteredDatasets.length + ')'"></span>
+    </button>
+
+    <!-- Sort -->
+    <div class="ml-auto flex items-center gap-2">
+      <label class="text-xs text-gray-500 dark:text-gray-400" x-text="lang === 'ko' ? '정렬:' : 'Sort:'"></label>
+      <select x-model="sortBy"
+              class="text-sm border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-1.5
+                     bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500">
+        <option value="stars" x-text="lang === 'ko' ? '⭐ 스타순' : '⭐ Stars'"></option>
+        <option value="year_desc" x-text="lang === 'ko' ? '📅 최신순' : '📅 Newest'"></option>
+        <option value="year_asc" x-text="lang === 'ko' ? '📅 오래된순' : '📅 Oldest'"></option>
+        <option value="name" x-text="lang === 'ko' ? '🔤 이름순' : '🔤 Name'"></option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ──────────── FILTERS ──────────── -->
+  <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
+    <div class="flex items-center justify-between mb-3">
+      <span class="text-sm font-semibold text-gray-700 dark:text-gray-300"
+            x-text="lang === 'ko' ? '필터' : 'Filters'"></span>
+      <button @click="clearFilters()"
+              x-show="hasActiveFilters"
+              x-cloak
+              class="text-xs text-brand-500 hover:underline"
+              x-text="lang === 'ko' ? '전체 해제' : 'Clear all'"></button>
+    </div>
+
+    <!-- Year -->
+    <div class="mb-3">
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wide"
+         x-text="lang === 'ko' ? '연도' : 'Year'"></p>
+      <div class="flex flex-wrap gap-1.5">
+        <template x-for="y in allYears" :key="y">
+          <button @click="toggleFilter('years', y)"
+                  :class="filters.years.includes(y) ? 'bg-brand-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                  class="filter-pill text-xs px-2.5 py-1 rounded-full font-medium"
+                  x-text="y"></button>
+        </template>
+      </div>
+    </div>
+
+    <!-- Category -->
+    <div class="mb-3">
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wide"
+         x-text="lang === 'ko' ? '카테고리' : 'Category'"></p>
+      <div class="flex flex-wrap gap-1.5">
+        <template x-for="c in allCategories" :key="c">
+          <button @click="toggleFilter('categories', c)"
+                  :class="filters.categories.includes(c) ? 'bg-purple-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                  class="filter-pill text-xs px-2.5 py-1 rounded-full font-medium"
+                  x-text="c"></button>
+        </template>
+      </div>
+    </div>
+
+    <!-- Hardware (Models only) -->
+    <div class="mb-3" x-show="activeTab === 'models'">
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wide"
+         x-text="lang === 'ko' ? '하드웨어' : 'Hardware'"></p>
+      <div class="flex flex-wrap gap-1.5">
+        <template x-for="h in allHardware" :key="h">
+          <button @click="toggleFilter('hardware', h)"
+                  :class="filters.hardware.includes(h) ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                  class="filter-pill text-xs px-2.5 py-1 rounded-full font-medium"
+                  x-text="h"></button>
+        </template>
+      </div>
+    </div>
+
+    <!-- Learning Method (Models only) -->
+    <div class="mb-1" x-show="activeTab === 'models'">
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wide"
+         x-text="lang === 'ko' ? '학습 방식' : 'Learning Method'"></p>
+      <div class="flex flex-wrap gap-1.5">
+        <template x-for="l in allLearning" :key="l">
+          <button @click="toggleFilter('learning', l)"
+                  :class="filters.learning.includes(l) ? 'bg-teal-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                  class="filter-pill text-xs px-2.5 py-1 rounded-full font-medium"
+                  x-text="l"></button>
+        </template>
+      </div>
+    </div>
+
+    <!-- Source (Datasets only) -->
+    <div class="mb-1" x-show="activeTab === 'datasets'">
+      <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium uppercase tracking-wide"
+         x-text="lang === 'ko' ? '데이터 출처' : 'Source'"></p>
+      <div class="flex flex-wrap gap-1.5">
+        <template x-for="s in allSources" :key="s">
+          <button @click="toggleFilter('sources', s)"
+                  :class="filters.sources.includes(s) ? 'bg-blue-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'"
+                  class="filter-pill text-xs px-2.5 py-1 rounded-full font-medium"
+                  x-text="s"></button>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- ──────────── CHARTS ──────────── -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <!-- Timeline chart -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          x-text="lang === 'ko' ? '📅 연도별 등재 수' : '📅 Entries by Year'"></h3>
+      <canvas id="timelineChart" height="160"></canvas>
+    </div>
+
+    <!-- Category distribution -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          x-text="lang === 'ko' ? '🏷️ 카테고리 분포' : '🏷️ Category Distribution'"></h3>
+      <canvas id="categoryChart" height="160"></canvas>
+    </div>
+  </div>
+
+  <!-- ──────────── MODEL CARDS ──────────── -->
+  <div x-show="activeTab === 'models'">
+    <div x-show="filteredModels.length === 0" class="text-center py-16 text-gray-400">
+      <div class="text-4xl mb-3">🔍</div>
+      <p x-text="lang === 'ko' ? '검색 결과가 없습니다' : 'No results found'"></p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <template x-for="item in paginatedModels" :key="item.id">
+        <div class="card-enter bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800
+                    hover:shadow-lg hover:border-brand-400 dark:hover:border-brand-600 transition-all duration-200 flex flex-col">
+          <!-- Card header -->
+          <div class="p-4 pb-3 flex-1">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h3 class="font-bold text-base leading-tight" x-text="item.name"></h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" x-text="item.org + ' · ' + item.year"></p>
+              </div>
+              <div class="flex items-center gap-1 text-xs bg-yellow-50 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 px-2 py-1 rounded-lg shrink-0">
+                <span>⭐</span>
+                <span x-text="item.stats && item.stats.github_stars >= 1000 ? (item.stats.github_stars/1000).toFixed(1) + 'k' : (item.stats ? item.stats.github_stars : 0)"></span>
+              </div>
+            </div>
+
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3"
+               x-text="lang === 'ko' ? item.description_ko : item.description_en"></p>
+
+            <!-- Categories + Hardware -->
+            <div class="flex flex-wrap gap-1 mt-3">
+              <template x-for="c in (item.categories || [])" :key="'c-'+c">
+                <span class="tag bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300" x-text="c"></span>
+              </template>
+              <template x-for="h in (item.hardware || [])" :key="'h-'+h">
+                <span class="tag bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300" x-text="h"></span>
+              </template>
+              <template x-for="l in (item.learning || [])" :key="'l-'+l">
+                <span class="tag bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300" x-text="l"></span>
+              </template>
+            </div>
+          </div>
+
+          <!-- Card footer -->
+          <div class="border-t border-gray-100 dark:border-gray-800 px-4 py-2.5 flex items-center gap-2">
+            <template x-if="item.github_url">
+              <a :href="item.github_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-brand-500 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                Code
+              </a>
+            </template>
+            <template x-if="item.paper_url">
+              <a :href="item.paper_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors">
+                📄 Paper
+              </a>
+            </template>
+            <template x-if="item.hf_url">
+              <a :href="item.hf_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-yellow-500 transition-colors">
+                🤗 HF
+              </a>
+            </template>
+            <template x-if="item.project_url">
+              <a :href="item.project_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-brand-500 transition-colors">
+                🌐 Demo
+              </a>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- ──────────── DATASET CARDS ──────────── -->
+  <div x-show="activeTab === 'datasets'">
+    <div x-show="filteredDatasets.length === 0" class="text-center py-16 text-gray-400">
+      <div class="text-4xl mb-3">🔍</div>
+      <p x-text="lang === 'ko' ? '검색 결과가 없습니다' : 'No results found'"></p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <template x-for="item in paginatedDatasets" :key="item.id">
+        <div class="card-enter bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800
+                    hover:shadow-lg hover:border-green-400 dark:hover:border-green-700 transition-all duration-200 flex flex-col">
+          <div class="p-4 pb-3 flex-1">
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <div>
+                <h3 class="font-bold text-base leading-tight" x-text="item.name"></h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" x-text="item.org + ' · ' + item.year"></p>
+              </div>
+              <!-- Scale badge -->
+              <div x-show="item.scale && item.scale.trajectories > 0"
+                   class="text-xs bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-lg shrink-0 text-right">
+                <span x-text="item.scale && item.scale.trajectories >= 1000 ? (item.scale.trajectories/1000).toFixed(0)+'k' : (item.scale ? item.scale.trajectories : '')"></span>
+                <span class="opacity-70 ml-0.5" x-text="lang === 'ko' ? '궤적' : 'trajs'"></span>
+              </div>
+            </div>
+
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-3"
+               x-text="lang === 'ko' ? item.description_ko : item.description_en"></p>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1 mt-3">
+              <template x-for="c in (item.categories || [])" :key="'c-'+c">
+                <span class="tag bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300" x-text="c"></span>
+              </template>
+              <template x-for="s in (item.source || [])" :key="'s-'+s">
+                <span class="tag bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300" x-text="s"></span>
+              </template>
+              <template x-for="m in (item.modality || []).slice(0, 3)" :key="'m-'+m">
+                <span class="tag bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400" x-text="m"></span>
+              </template>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-100 dark:border-gray-800 px-4 py-2.5 flex items-center gap-2">
+            <template x-if="item.github_url">
+              <a :href="item.github_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-brand-500 transition-colors">
+                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                Code
+              </a>
+            </template>
+            <template x-if="item.paper_url">
+              <a :href="item.paper_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors">
+                📄 Paper
+              </a>
+            </template>
+            <template x-if="item.hf_url">
+              <a :href="item.hf_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-yellow-500 transition-colors">
+                🤗 HF
+              </a>
+            </template>
+            <template x-if="item.project_url">
+              <a :href="item.project_url" target="_blank"
+                 class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-brand-500 transition-colors">
+                🌐 Site
+              </a>
+            </template>
+            <!-- HF downloads badge -->
+            <div x-show="item.stats && item.stats.hf_downloads > 0" class="ml-auto">
+              <span class="text-xs text-yellow-600 dark:text-yellow-400"
+                    x-text="'⬇️ ' + (item.stats.hf_downloads >= 1000 ? (item.stats.hf_downloads/1000).toFixed(0)+'k' : item.stats.hf_downloads)"></span>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- Load more -->
+  <div class="text-center mt-8" x-show="activeTab === 'models' && filteredModels.length > modelPage * pageSize">
+    <button @click="modelPage++"
+            class="px-6 py-2 rounded-lg border border-brand-400 text-brand-500 hover:bg-brand-50 dark:hover:bg-brand-900/20 text-sm font-medium transition-colors"
+            x-text="lang === 'ko' ? '더 보기' : 'Load more'"></button>
+  </div>
+  <div class="text-center mt-8" x-show="activeTab === 'datasets' && filteredDatasets.length > datasetPage * pageSize">
+    <button @click="datasetPage++"
+            class="px-6 py-2 rounded-lg border border-green-400 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 text-sm font-medium transition-colors"
+            x-text="lang === 'ko' ? '더 보기' : 'Load more'"></button>
+  </div>
+
+  <!-- Add entry CTA -->
+  <div class="mt-12 bg-gradient-to-r from-brand-500/10 to-purple-500/10 dark:from-brand-500/20 dark:to-purple-500/20
+              rounded-xl border border-brand-200 dark:border-brand-800 p-6 text-center">
+    <h3 class="font-bold text-lg mb-2"
+        x-text="lang === 'ko' ? '새 모델/데이터셋 추가하기' : 'Add a Model or Dataset'"></h3>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4"
+       x-text="lang === 'ko' ? '이슈를 등록하면 자동으로 PR이 생성됩니다. 관리자 검토 후 추가됩니다.' : 'Open an issue and a PR will be created automatically for admin review.'"></p>
+    <div class="flex gap-3 justify-center flex-wrap">
+      <a href="https://github.com/PyTorchKR/Awesome-Physical-AI/issues/new?template=add-model.yml"
+         target="_blank"
+         class="px-4 py-2 rounded-lg bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium transition-colors">
+        ➕ <span x-text="lang === 'ko' ? '모델 추가' : 'Add Model'"></span>
+      </a>
+      <a href="https://github.com/PyTorchKR/Awesome-Physical-AI/issues/new?template=add-dataset.yml"
+         target="_blank"
+         class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors">
+        ➕ <span x-text="lang === 'ko' ? '데이터셋 추가' : 'Add Dataset'"></span>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="text-center text-xs text-gray-400 dark:text-gray-600 py-6 mt-4 border-t border-gray-100 dark:border-gray-900">
+  <p>Stats auto-updated every Sunday · Dashboard auto-generated from <code>data/models.yaml</code> &amp; <code>data/datasets.yaml</code></p>
+  <p class="mt-1">Made with ❤️ by <a href="https://github.com/PyTorchKR" class="hover:underline text-brand-400">PyTorch KR</a></p>
+</footer>
+
+<!-- ═══════════════════════════════════ ALPINE APP ═══════════════════════════════════ -->
+<script>
+function app() {
+  return {
+    // State
+    lang: 'ko',
+    darkMode: false,
+    activeTab: 'models',
+    sortBy: 'stars',
+    search: '',
+    modelPage: 1,
+    datasetPage: 1,
+    pageSize: 12,
+
+    // Data
+    metadata: { last_updated: '', total_models: 0, total_datasets: 0, total_orgs: 0 },
+    models: [],
+    datasets: [],
+
+    // Filters
+    filters: { years: [], categories: [], hardware: [], learning: [], sources: [] },
+
+    // Derived filter options
+    get allYears() {
+      const items = this.activeTab === 'models' ? this.models : this.datasets;
+      return [...new Set(items.map(i => i.year))].sort((a, b) => b - a);
+    },
+    get allCategories() {
+      const items = this.activeTab === 'models' ? this.models : this.datasets;
+      return [...new Set(items.flatMap(i => i.categories || []))].sort();
+    },
+    get allHardware() {
+      return [...new Set(this.models.flatMap(m => m.hardware || []))].sort();
+    },
+    get allLearning() {
+      return [...new Set(this.models.flatMap(m => m.learning || []))].sort();
+    },
+    get allSources() {
+      return [...new Set(this.datasets.flatMap(d => d.source || []))].sort();
+    },
+    get hasActiveFilters() {
+      return Object.values(this.filters).some(f => f.length > 0) || this.search.length > 0;
+    },
+    get totalStars() {
+      const all = [...this.models, ...this.datasets];
+      return all.reduce((s, i) => s + (i.stats?.github_stars || 0), 0);
+    },
+
+    // Filtered + sorted lists
+    get filteredModels() {
+      let items = this.models.filter(m => this._matchesFilters(m, 'model'));
+      return this._sort(items);
+    },
+    get filteredDatasets() {
+      let items = this.datasets.filter(d => this._matchesFilters(d, 'dataset'));
+      return this._sort(items);
+    },
+    get paginatedModels() {
+      return this.filteredModels.slice(0, this.modelPage * this.pageSize);
+    },
+    get paginatedDatasets() {
+      return this.filteredDatasets.slice(0, this.datasetPage * this.pageSize);
+    },
+
+    _matchesFilters(item, type) {
+      const q = this.search.toLowerCase();
+      if (q) {
+        const haystack = [
+          item.name, item.org, item.description_en, item.description_ko,
+          ...(item.tags || []), ...(item.categories || []),
+          ...(item.hardware || []), ...(item.learning || []),
+        ].join(' ').toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      if (this.filters.years.length && !this.filters.years.includes(item.year)) return false;
+      if (this.filters.categories.length && !this.filters.categories.some(c => (item.categories || []).includes(c))) return false;
+      if (type === 'model') {
+        if (this.filters.hardware.length && !this.filters.hardware.some(h => (item.hardware || []).includes(h))) return false;
+        if (this.filters.learning.length && !this.filters.learning.some(l => (item.learning || []).includes(l))) return false;
+      }
+      if (type === 'dataset') {
+        if (this.filters.sources.length && !this.filters.sources.some(s => (item.source || []).includes(s))) return false;
+      }
+      return true;
+    },
+
+    _sort(items) {
+      return [...items].sort((a, b) => {
+        if (this.sortBy === 'stars') return (b.stats?.github_stars || 0) - (a.stats?.github_stars || 0);
+        if (this.sortBy === 'year_desc') return b.year - a.year;
+        if (this.sortBy === 'year_asc') return a.year - b.year;
+        if (this.sortBy === 'name') return a.name.localeCompare(b.name);
+        return 0;
+      });
+    },
+
+    toggleFilter(key, val) {
+      const arr = this.filters[key];
+      const idx = arr.indexOf(val);
+      if (idx === -1) arr.push(val);
+      else arr.splice(idx, 1);
+      this.modelPage = 1;
+      this.datasetPage = 1;
+      this.$nextTick(() => this.updateCharts());
+    },
+
+    clearFilters() {
+      this.filters = { years: [], categories: [], hardware: [], learning: [], sources: [] };
+      this.search = '';
+      this.modelPage = 1;
+      this.datasetPage = 1;
+      this.$nextTick(() => this.updateCharts());
+    },
+
+    // ── Charts ──
+    timelineChart: null,
+    categoryChart: null,
+
+    buildCharts() {
+      const isDark = this.darkMode;
+      const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+      const labelColor = isDark ? '#9ca3af' : '#6b7280';
+
+      // --- Timeline chart ---
+      const allItems = [...this.models, ...this.datasets];
+      const yearCounts = {};
+      allItems.forEach(i => { yearCounts[i.year] = (yearCounts[i.year] || 0) + 1; });
+      const years = Object.keys(yearCounts).sort();
+      const counts = years.map(y => yearCounts[y]);
+
+      const tlCtx = document.getElementById('timelineChart').getContext('2d');
+      if (this.timelineChart) this.timelineChart.destroy();
+      this.timelineChart = new Chart(tlCtx, {
+        type: 'bar',
+        data: {
+          labels: years,
+          datasets: [{
+            data: counts,
+            backgroundColor: '#6366f1cc',
+            borderColor: '#6366f1',
+            borderWidth: 1,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: gridColor }, ticks: { color: labelColor } },
+            y: { grid: { color: gridColor }, ticks: { color: labelColor, stepSize: 1 }, beginAtZero: true },
+          }
+        }
+      });
+
+      // --- Category donut ---
+      const catCounts = {};
+      allItems.forEach(i => (i.categories || []).forEach(c => { catCounts[c] = (catCounts[c] || 0) + 1; }));
+      const cats = Object.keys(catCounts).sort((a, b) => catCounts[b] - catCounts[a]);
+      const catValues = cats.map(c => catCounts[c]);
+      const palette = ['#6366f1','#a855f7','#ec4899','#f97316','#eab308','#22c55e','#14b8a6','#3b82f6'];
+
+      const catCtx = document.getElementById('categoryChart').getContext('2d');
+      if (this.categoryChart) this.categoryChart.destroy();
+      this.categoryChart = new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+          labels: cats,
+          datasets: [{
+            data: catValues,
+            backgroundColor: cats.map((_, i) => palette[i % palette.length]),
+            borderWidth: 0,
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: labelColor, boxWidth: 10, font: { size: 11 }, padding: 8 }
+            }
+          }
+        }
+      });
+    },
+
+    updateCharts() {
+      if (this.timelineChart) this.timelineChart.destroy();
+      if (this.categoryChart) this.categoryChart.destroy();
+      this.buildCharts();
+    },
+
+    // ── Init ──
+    async init() {
+      // Detect system dark preference
+      this.darkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      try {
+        const res = await fetch('./data.json');
+        const data = await res.json();
+        this.metadata = data.metadata;
+        this.models = data.models || [];
+        this.datasets = data.datasets || [];
+      } catch (e) {
+        console.error('Failed to load data.json:', e);
+      }
+
+      this.$nextTick(() => this.buildCharts());
+
+      // Rebuild charts on dark mode toggle
+      this.$watch('darkMode', () => this.$nextTick(() => this.updateCharts()));
+      this.$watch('activeTab', () => this.$nextTick(() => this.updateCharts()));
+    }
+  }
+}
+</script>
+</body>
+</html>

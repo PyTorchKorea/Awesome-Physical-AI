@@ -1,0 +1,179 @@
+name: "Add a Model"
+description: "Submit a new Physical AI / Robotics model for inclusion"
+title: "[Model] "
+labels: ["add-model"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 새 모델 추가 | Add a New Model
+        양식을 작성해 주세요. 이슈 등록 후 봇이 자동으로 PR을 생성합니다.
+        Please fill in the form. A bot will create a PR automatically.
+
+  - type: input
+    id: id
+    attributes:
+      label: "ID (slug)"
+      description: "고유 식별자 (소문자, 하이픈만 사용) | Unique identifier (lowercase, hyphens only)"
+      placeholder: "e.g. my-robot-model"
+    validations:
+      required: true
+
+  - type: input
+    id: name
+    attributes:
+      label: "Name"
+      description: "모델의 공식 이름 | Official model name"
+      placeholder: "e.g. MyRobotModel"
+    validations:
+      required: true
+
+  - type: input
+    id: organization
+    attributes:
+      label: "Organization"
+      description: "개발한 기관/회사 | Institution or company"
+      placeholder: "e.g. Stanford University"
+    validations:
+      required: true
+
+  - type: input
+    id: year
+    attributes:
+      label: "Year"
+      description: "출시 또는 논문 발표 연도 | Year of release or paper"
+      placeholder: "e.g. 2024"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description_en
+    attributes:
+      label: "Description (English)"
+      description: "1-2 sentences describing the model"
+      placeholder: "A robot policy that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: description_ko
+    attributes:
+      label: "Description (Korean)"
+      description: "1-2 문장으로 모델을 설명해 주세요"
+      placeholder: "로봇 정책으로..."
+    validations:
+      required: false
+
+  - type: input
+    id: github_url
+    attributes:
+      label: "GitHub URL"
+      placeholder: "https://github.com/org/repo"
+    validations:
+      required: false
+
+  - type: input
+    id: paper_url
+    attributes:
+      label: "Paper URL (arXiv)"
+      placeholder: "https://arxiv.org/abs/xxxx.xxxxx"
+    validations:
+      required: false
+
+  - type: input
+    id: huggingface_url
+    attributes:
+      label: "HuggingFace URL"
+      placeholder: "https://huggingface.co/org/model"
+    validations:
+      required: false
+
+  - type: input
+    id: project_page_url
+    attributes:
+      label: "Project Page URL"
+      placeholder: "https://mymodel.github.io"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: categories
+    attributes:
+      label: "Categories"
+      options:
+        - label: "manipulation"
+        - label: "locomotion"
+        - label: "navigation"
+        - label: "dexterous"
+        - label: "whole-body"
+        - label: "aerial"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: hardware_targets
+    attributes:
+      label: "Hardware Targets"
+      options:
+        - label: "manipulator"
+        - label: "humanoid"
+        - label: "quadruped"
+        - label: "biped"
+        - label: "mobile"
+        - label: "drone"
+        - label: "hand"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: learning_methods
+    attributes:
+      label: "Learning Methods"
+      options:
+        - label: "VLA"
+        - label: "IL"
+        - label: "RL"
+        - label: "diffusion"
+        - label: "world_model"
+        - label: "sim2real"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: framework
+    attributes:
+      label: "Framework"
+      options:
+        - label: "pytorch"
+        - label: "jax"
+        - label: "tensorflow"
+        - label: "other"
+
+  - type: checkboxes
+    id: communication
+    attributes:
+      label: "Communication"
+      options:
+        - label: "ros2"
+        - label: "grpc"
+        - label: "lcm"
+        - label: "zenoh"
+
+  - type: input
+    id: tags
+    attributes:
+      label: "Tags (optional)"
+      description: "Comma-separated tags"
+      placeholder: "e.g. foundation-model, manipulation, diffusion"
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "The model is open-source (code or weights publicly available)"
+          required: true
+        - label: "At least one URL (GitHub, paper, or HuggingFace) is provided"
+          required: true
+        - label: "I have read the contribution guidelines"
+          required: true
