@@ -3,7 +3,7 @@
 > 🤖 Physical AI (Robotics & Embodied AI) 분야의 오픈소스 모델과 데이터셋을 체계적으로 정리한 큐레이션 리스트.
 > A curated list of open-source models and datasets for Physical AI (Robotics & Embodied AI).
 
-[![Models](https://img.shields.io/badge/Models-15-blue)](https://pytorchkorea.github.io/Awesome-Physical-AI)
+[![Models](https://img.shields.io/badge/Models-14-blue)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 [![Datasets](https://img.shields.io/badge/Datasets-10-green)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 [![Organizations](https://img.shields.io/badge/Organizations-21-orange)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 [![Updated](https://img.shields.io/badge/Updated-2026-04-19-lightgrey)](https://github.com/PyTorchKorea/Awesome-Physical-AI)
@@ -30,8 +30,7 @@
 |------|-------------|------|----------|----------|----------|---------|-------|
 | [Genesis](https://github.com/Genesis-Embodied-AI/Genesis) | Genesis Authors (MIT/CMU/Stanford) | 2024 | manipulation, locomotion, navigation | manipulator, humanoid, quadruped, mobile, drone | RL, sim2real | 28,523 | [📄](https://arxiv.org/abs/2501.00599)  |
 | [LeRobot](https://github.com/huggingface/lerobot) | Hugging Face | 2024 | manipulation | manipulator | IL, diffusion, VLA | 23,337 | [📄](https://arxiv.org/abs/2408.01730) [🤗](https://huggingface.co/lerobot) |
-| [π0 (pi-zero)](https://github.com/Physical-Intelligence/openpi) | Physical Intelligence | 2024 | manipulation, whole-body | manipulator, humanoid | VLA, diffusion | 11,365 | [📄](https://arxiv.org/abs/2410.24164) [🤗](https://huggingface.co/physical-intelligence) |
-| [openpi (π0 Open Implementation)](https://github.com/Physical-Intelligence/openpi) | Physical Intelligence | 2025 | manipulation, dexterous | manipulator, humanoid | VLA, diffusion | 11,365 | [📄](https://arxiv.org/abs/2410.24164) [🤗](https://huggingface.co/physical-intelligence/pi0) |
+| [π0 (pi-zero)](https://github.com/Physical-Intelligence/openpi) | Physical Intelligence | 2024 | manipulation, whole-body | manipulator, humanoid | VLA, diffusion | 11,365 | [📄](https://arxiv.org/abs/2410.24164) [🤗](https://huggingface.co/physical-intelligence/pi0) |
 | [Isaac Lab](https://github.com/isaac-sim/IsaacLab) | NVIDIA | 2023 | manipulation, locomotion, navigation | manipulator, humanoid, quadruped, mobile | RL, IL, sim2real | 6,962 | [📄](https://arxiv.org/abs/2301.04195)  |
 | [GR00T N1](https://github.com/NVIDIA/Isaac-GR00T) | NVIDIA | 2025 | manipulation, whole-body | humanoid | VLA, IL | 6,729 | [📄](https://arxiv.org/abs/2503.14734) [🤗](https://huggingface.co/nvidia/GR00T-N1-2B) |
 | [OpenVLA](https://github.com/openvla/openvla) | Stanford / UC Berkeley | 2024 | manipulation | manipulator | VLA | 5,936 | [📄](https://arxiv.org/abs/2406.09246) [🤗](https://huggingface.co/openvla/openvla-7b) |

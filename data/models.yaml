@@ -39,7 +39,7 @@
   description_ko: 플로우 매칭 정책 기반의 범용 로봇 파운데이션 모델. 정교한 조작과 전신 제어를 지원합니다.
   github_url: https://github.com/Physical-Intelligence/openpi
   paper_url: https://arxiv.org/abs/2410.24164
-  hf_url: https://huggingface.co/physical-intelligence
+  hf_url: https://huggingface.co/physical-intelligence/pi0
   project_url: https://www.physicalintelligence.company/blog/pi0
   categories:
   - manipulation
@@ -64,6 +64,7 @@
   - foundation-model
   - flow-matching
   - dexterous
+  - open-weights
 - id: openvla
   name: OpenVLA
   org: Stanford / UC Berkeley
@@ -465,37 +466,3 @@
   - cross-embodiment
   - generalist
   - transformer
-- id: open-pi-zero
-  name: openpi (π0 Open Implementation)
-  org: Physical Intelligence
-  year: 2025
-  description_en: Open implementation of the π0 flow-matching policy for robotic manipulation.
-    Includes training code, pretrained checkpoints, and deployment tools.
-  description_ko: 로봇 조작을 위한 π0 플로우 매칭 정책 오픈 구현체. 학습 코드, 사전학습 체크포인트, 배포 도구를 포함합니다.
-  github_url: https://github.com/Physical-Intelligence/openpi
-  paper_url: https://arxiv.org/abs/2410.24164
-  hf_url: https://huggingface.co/physical-intelligence/pi0
-  project_url: https://www.physicalintelligence.company/blog/pi0
-  categories:
-  - manipulation
-  - dexterous
-  hardware:
-  - manipulator
-  - humanoid
-  learning:
-  - VLA
-  - diffusion
-  framework:
-  - jax
-  communication: []
-  stats:
-    github_stars: 11365
-    github_forks: 1782
-    hf_downloads: 0
-    last_updated: '2026-04-19'
-  added_date: '2025-01-17'
-  tags:
-  - flow-matching
-  - pi0
-  - open-weights
-  - dexterous
