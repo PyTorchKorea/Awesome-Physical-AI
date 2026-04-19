@@ -1,348 +1,501 @@
-# Awesome Physical AI — Models
-# Auto-stats fields (github_stars, hf_downloads, last_updated) are refreshed weekly by scripts/update_stats.py
-# To add a new model, open an issue using the "Add Model" template.
-
 - id: lerobot
   name: LeRobot
   org: Hugging Face
   year: 2024
-  description_en: "End-to-end learning for real-world robotics. Provides datasets, pretrained models, and training code for manipulation tasks."
-  description_ko: "실제 로봇을 위한 엔드-투-엔드 학습 프레임워크. 조작 태스크를 위한 데이터셋, 사전학습 모델, 학습 코드를 제공합니다."
-  github_url: "https://github.com/huggingface/lerobot"
-  paper_url: "https://arxiv.org/abs/2408.01730"
-  hf_url: "https://huggingface.co/lerobot"
-  project_url: ""
-  categories: [manipulation]
-  hardware: [manipulator]
-  learning: [IL, diffusion, VLA]
-  framework: [pytorch]
+  description_en: End-to-end learning for real-world robotics. Provides datasets,
+    pretrained models, and training code for manipulation tasks.
+  description_ko: 실제 로봇을 위한 엔드-투-엔드 학습 프레임워크. 조작 태스크를 위한 데이터셋, 사전학습 모델, 학습 코드를 제공합니다.
+  github_url: https://github.com/huggingface/lerobot
+  paper_url: https://arxiv.org/abs/2408.01730
+  hf_url: https://huggingface.co/lerobot
+  project_url: ''
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  learning:
+  - IL
+  - diffusion
+  - VLA
+  framework:
+  - pytorch
   communication: []
   stats:
-    github_stars: 9800
-    github_forks: 1100
+    github_stars: 23337
+    github_forks: 4280
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2024-06-01"
-  tags: [imitation-learning, diffusion-policy, act]
-
+    last_updated: '2026-04-19'
+  added_date: '2024-06-01'
+  tags:
+  - imitation-learning
+  - diffusion-policy
+  - act
 - id: pi0
   name: π0 (pi-zero)
   org: Physical Intelligence
   year: 2024
-  description_en: "A generalist robot foundation model based on a flow-matching policy. Supports dexterous manipulation and whole-body control."
-  description_ko: "플로우 매칭 정책 기반의 범용 로봇 파운데이션 모델. 정교한 조작과 전신 제어를 지원합니다."
-  github_url: "https://github.com/Physical-Intelligence/openpi"
-  paper_url: "https://arxiv.org/abs/2410.24164"
-  hf_url: "https://huggingface.co/physical-intelligence"
-  project_url: "https://www.physicalintelligence.company/blog/pi0"
-  categories: [manipulation, whole-body]
-  hardware: [manipulator, humanoid]
-  learning: [VLA, diffusion]
-  framework: [jax, pytorch]
+  description_en: A generalist robot foundation model based on a flow-matching policy.
+    Supports dexterous manipulation and whole-body control.
+  description_ko: 플로우 매칭 정책 기반의 범용 로봇 파운데이션 모델. 정교한 조작과 전신 제어를 지원합니다.
+  github_url: https://github.com/Physical-Intelligence/openpi
+  paper_url: https://arxiv.org/abs/2410.24164
+  hf_url: https://huggingface.co/physical-intelligence
+  project_url: https://www.physicalintelligence.company/blog/pi0
+  categories:
+  - manipulation
+  - whole-body
+  hardware:
+  - manipulator
+  - humanoid
+  learning:
+  - VLA
+  - diffusion
+  framework:
+  - jax
+  - pytorch
   communication: []
   stats:
-    github_stars: 4200
-    github_forks: 380
+    github_stars: 11365
+    github_forks: 1782
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2024-10-31"
-  tags: [foundation-model, flow-matching, dexterous]
-
+    last_updated: '2026-04-19'
+  added_date: '2024-10-31'
+  tags:
+  - foundation-model
+  - flow-matching
+  - dexterous
 - id: openvla
   name: OpenVLA
   org: Stanford / UC Berkeley
   year: 2024
-  description_en: "An open-source Vision-Language-Action model fine-tuned from Prismatic VLM on the Open X-Embodiment dataset."
-  description_ko: "Open X-Embodiment 데이터셋으로 Prismatic VLM을 파인튜닝한 오픈소스 Vision-Language-Action 모델."
-  github_url: "https://github.com/openvla/openvla"
-  paper_url: "https://arxiv.org/abs/2406.09246"
-  hf_url: "https://huggingface.co/openvla/openvla-7b"
-  project_url: "https://openvla.github.io"
-  categories: [manipulation]
-  hardware: [manipulator]
-  learning: [VLA]
-  framework: [pytorch]
+  description_en: An open-source Vision-Language-Action model fine-tuned from Prismatic
+    VLM on the Open X-Embodiment dataset.
+  description_ko: Open X-Embodiment 데이터셋으로 Prismatic VLM을 파인튜닝한 오픈소스 Vision-Language-Action
+    모델.
+  github_url: https://github.com/openvla/openvla
+  paper_url: https://arxiv.org/abs/2406.09246
+  hf_url: https://huggingface.co/openvla/openvla-7b
+  project_url: https://openvla.github.io
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  learning:
+  - VLA
+  framework:
+  - pytorch
   communication: []
   stats:
-    github_stars: 2100
-    github_forks: 230
-    hf_downloads: 85000
-    last_updated: "2026-04-12"
-  added_date: "2024-06-13"
-  tags: [VLA, 7B, prismatic]
-
+    github_stars: 5936
+    github_forks: 701
+    hf_downloads: 1709553
+    last_updated: '2026-04-19'
+  added_date: '2024-06-13'
+  tags:
+  - VLA
+  - 7B
+  - prismatic
 - id: octo
   name: Octo
   org: UC Berkeley / Stanford / CMU / others
   year: 2023
-  description_en: "A transformer-based robot policy pretrained on 800k+ robot trajectories. Supports diverse robot morphologies via tokenized observations."
-  description_ko: "80만 개 이상의 로봇 궤적으로 사전학습된 트랜스포머 기반 로봇 정책. 토큰화된 관측을 통해 다양한 로봇 형태를 지원합니다."
-  github_url: "https://github.com/octo-models/octo"
-  paper_url: "https://arxiv.org/abs/2405.12213"
-  hf_url: "https://huggingface.co/rail-berkeley/octo-base"
-  project_url: "https://octo-models.github.io"
-  categories: [manipulation]
-  hardware: [manipulator, mobile]
-  learning: [IL, VLA]
-  framework: [jax]
+  description_en: A transformer-based robot policy pretrained on 800k+ robot trajectories.
+    Supports diverse robot morphologies via tokenized observations.
+  description_ko: 80만 개 이상의 로봇 궤적으로 사전학습된 트랜스포머 기반 로봇 정책. 토큰화된 관측을 통해 다양한 로봇 형태를 지원합니다.
+  github_url: https://github.com/octo-models/octo
+  paper_url: https://arxiv.org/abs/2405.12213
+  hf_url: https://huggingface.co/rail-berkeley/octo-base
+  project_url: https://octo-models.github.io
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  - mobile
+  learning:
+  - IL
+  - VLA
+  framework:
+  - jax
   communication: []
   stats:
-    github_stars: 1700
-    github_forks: 195
-    hf_downloads: 42000
-    last_updated: "2026-04-12"
-  added_date: "2023-10-01"
-  tags: [generalist, transformer, multi-robot]
-
+    github_stars: 1623
+    github_forks: 269
+    hf_downloads: 71
+    last_updated: '2026-04-19'
+  added_date: '2023-10-01'
+  tags:
+  - generalist
+  - transformer
+  - multi-robot
 - id: act
   name: ACT (Action Chunking with Transformers)
   org: Stanford
   year: 2023
-  description_en: "Imitation learning with action chunking. Achieves dexterous bimanual manipulation from 50 demonstrations using a CVAE-based transformer."
-  description_ko: "액션 청킹을 활용한 모방 학습. CVAE 기반 트랜스포머로 50개의 시연만으로 정교한 양팔 조작을 달성합니다."
-  github_url: "https://github.com/tonyzhaozh/act"
-  paper_url: "https://arxiv.org/abs/2304.13705"
-  hf_url: ""
-  project_url: "https://tonyzhaozh.github.io/aloha/"
-  categories: [manipulation, dexterous]
-  hardware: [manipulator]
-  learning: [IL]
-  framework: [pytorch]
-  communication: [ros2]
+  description_en: Imitation learning with action chunking. Achieves dexterous bimanual
+    manipulation from 50 demonstrations using a CVAE-based transformer.
+  description_ko: 액션 청킹을 활용한 모방 학습. CVAE 기반 트랜스포머로 50개의 시연만으로 정교한 양팔 조작을 달성합니다.
+  github_url: https://github.com/tonyzhaozh/act
+  paper_url: https://arxiv.org/abs/2304.13705
+  hf_url: ''
+  project_url: https://tonyzhaozh.github.io/aloha/
+  categories:
+  - manipulation
+  - dexterous
+  hardware:
+  - manipulator
+  learning:
+  - IL
+  framework:
+  - pytorch
+  communication:
+  - ros2
   stats:
-    github_stars: 3100
-    github_forks: 530
+    github_stars: 1879
+    github_forks: 372
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2023-04-01"
-  tags: [ALOHA, bimanual, CVAE, imitation-learning]
-
+    last_updated: '2026-04-19'
+  added_date: '2023-04-01'
+  tags:
+  - ALOHA
+  - bimanual
+  - CVAE
+  - imitation-learning
 - id: diffusion-policy
   name: Diffusion Policy
   org: Columbia University
   year: 2023
-  description_en: "Visuomotor policy learning via conditional denoising diffusion. Achieves state-of-the-art performance on 11 robotic manipulation tasks."
-  description_ko: "조건부 노이즈 제거 확산을 통한 시각운동 정책 학습. 11개의 로봇 조작 태스크에서 최고 성능을 달성합니다."
-  github_url: "https://github.com/real-stanford/diffusion_policy"
-  paper_url: "https://arxiv.org/abs/2303.04137"
-  hf_url: ""
-  project_url: "https://diffusion-policy.cs.columbia.edu"
-  categories: [manipulation]
-  hardware: [manipulator]
-  learning: [IL, diffusion]
-  framework: [pytorch]
+  description_en: Visuomotor policy learning via conditional denoising diffusion.
+    Achieves state-of-the-art performance on 11 robotic manipulation tasks.
+  description_ko: 조건부 노이즈 제거 확산을 통한 시각운동 정책 학습. 11개의 로봇 조작 태스크에서 최고 성능을 달성합니다.
+  github_url: https://github.com/real-stanford/diffusion_policy
+  paper_url: https://arxiv.org/abs/2303.04137
+  hf_url: ''
+  project_url: https://diffusion-policy.cs.columbia.edu
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  learning:
+  - IL
+  - diffusion
+  framework:
+  - pytorch
   communication: []
   stats:
-    github_stars: 2800
-    github_forks: 450
+    github_stars: 4026
+    github_forks: 742
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2023-03-07"
-  tags: [diffusion, visuomotor, score-matching]
-
+    last_updated: '2026-04-19'
+  added_date: '2023-03-07'
+  tags:
+  - diffusion
+  - visuomotor
+  - score-matching
 - id: mobile-aloha
   name: Mobile ALOHA
   org: Stanford
   year: 2024
-  description_en: "Whole-body teleoperation and imitation learning for mobile manipulation. Extends ALOHA with a mobile base for household tasks."
-  description_ko: "모바일 조작을 위한 전신 원격 조작 및 모방 학습. ALOHA를 모바일 베이스로 확장하여 가정용 태스크를 수행합니다."
-  github_url: "https://github.com/MarkFzp/mobile-aloha"
-  paper_url: "https://arxiv.org/abs/2401.02117"
-  hf_url: ""
-  project_url: "https://mobile-aloha.github.io"
-  categories: [manipulation, navigation, whole-body]
-  hardware: [mobile, manipulator]
-  learning: [IL]
-  framework: [pytorch]
-  communication: [ros2]
+  description_en: Whole-body teleoperation and imitation learning for mobile manipulation.
+    Extends ALOHA with a mobile base for household tasks.
+  description_ko: 모바일 조작을 위한 전신 원격 조작 및 모방 학습. ALOHA를 모바일 베이스로 확장하여 가정용 태스크를 수행합니다.
+  github_url: https://github.com/MarkFzp/mobile-aloha
+  paper_url: https://arxiv.org/abs/2401.02117
+  hf_url: ''
+  project_url: https://mobile-aloha.github.io
+  categories:
+  - manipulation
+  - navigation
+  - whole-body
+  hardware:
+  - mobile
+  - manipulator
+  learning:
+  - IL
+  framework:
+  - pytorch
+  communication:
+  - ros2
   stats:
-    github_stars: 2200
-    github_forks: 310
+    github_stars: 4407
+    github_forks: 733
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2024-01-04"
-  tags: [mobile-manipulation, household, teleoperation]
-
+    last_updated: '2026-04-19'
+  added_date: '2024-01-04'
+  tags:
+  - mobile-manipulation
+  - household
+  - teleoperation
 - id: humanplus
   name: HumanPlus
   org: Stanford
   year: 2024
-  description_en: "Humanoid shadowing and imitation from human video. A humanoid robot that learns to shadow humans and imitate skills from egocentric video."
-  description_ko: "인간 영상으로부터의 휴머노이드 섀도잉 및 모방 학습. 자아중심 비디오에서 기술을 모방하는 휴머노이드 로봇입니다."
-  github_url: "https://github.com/MarkFzp/humanplus"
-  paper_url: "https://arxiv.org/abs/2406.10454"
-  hf_url: ""
-  project_url: "https://humanoid-ai.github.io"
-  categories: [manipulation, whole-body]
-  hardware: [humanoid]
-  learning: [IL]
-  framework: [pytorch]
-  communication: [ros2]
+  description_en: Humanoid shadowing and imitation from human video. A humanoid robot
+    that learns to shadow humans and imitate skills from egocentric video.
+  description_ko: 인간 영상으로부터의 휴머노이드 섀도잉 및 모방 학습. 자아중심 비디오에서 기술을 모방하는 휴머노이드 로봇입니다.
+  github_url: https://github.com/MarkFzp/humanplus
+  paper_url: https://arxiv.org/abs/2406.10454
+  hf_url: ''
+  project_url: https://humanoid-ai.github.io
+  categories:
+  - manipulation
+  - whole-body
+  hardware:
+  - humanoid
+  learning:
+  - IL
+  framework:
+  - pytorch
+  communication:
+  - ros2
   stats:
-    github_stars: 1600
-    github_forks: 190
+    github_stars: 837
+    github_forks: 123
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2024-06-14"
-  tags: [humanoid, shadowing, egocentric]
-
+    last_updated: '2026-04-19'
+  added_date: '2024-06-14'
+  tags:
+  - humanoid
+  - shadowing
+  - egocentric
 - id: isaac-lab
   name: Isaac Lab
   org: NVIDIA
   year: 2023
-  description_en: "A GPU-accelerated robot learning framework built on NVIDIA Isaac Sim. Supports RL, imitation learning, and sim-to-real transfer."
-  description_ko: "NVIDIA Isaac Sim 기반의 GPU 가속 로봇 학습 프레임워크. RL, 모방 학습, 시뮬레이션-실제 전이를 지원합니다."
-  github_url: "https://github.com/isaac-sim/IsaacLab"
-  paper_url: "https://arxiv.org/abs/2301.04195"
-  hf_url: ""
-  project_url: "https://isaac-sim.github.io/IsaacLab"
-  categories: [manipulation, locomotion, navigation]
-  hardware: [manipulator, humanoid, quadruped, mobile]
-  learning: [RL, IL, sim2real]
-  framework: [pytorch]
-  communication: [ros2]
+  description_en: A GPU-accelerated robot learning framework built on NVIDIA Isaac
+    Sim. Supports RL, imitation learning, and sim-to-real transfer.
+  description_ko: NVIDIA Isaac Sim 기반의 GPU 가속 로봇 학습 프레임워크. RL, 모방 학습, 시뮬레이션-실제 전이를
+    지원합니다.
+  github_url: https://github.com/isaac-sim/IsaacLab
+  paper_url: https://arxiv.org/abs/2301.04195
+  hf_url: ''
+  project_url: https://isaac-sim.github.io/IsaacLab
+  categories:
+  - manipulation
+  - locomotion
+  - navigation
+  hardware:
+  - manipulator
+  - humanoid
+  - quadruped
+  - mobile
+  learning:
+  - RL
+  - IL
+  - sim2real
+  framework:
+  - pytorch
+  communication:
+  - ros2
   stats:
-    github_stars: 3400
-    github_forks: 1100
+    github_stars: 6962
+    github_forks: 3396
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2023-05-01"
-  tags: [simulation, GPU, RL, sim-to-real, NVIDIA]
-
+    last_updated: '2026-04-19'
+  added_date: '2023-05-01'
+  tags:
+  - simulation
+  - GPU
+  - RL
+  - sim-to-real
+  - NVIDIA
 - id: genesis
   name: Genesis
   org: Genesis Authors (MIT/CMU/Stanford)
   year: 2024
-  description_en: "A generative and universal physics engine for robotics and embodied AI. Ultra-fast simulation (43M FPS on RTX 4090) with generative capabilities."
-  description_ko: "로보틱스와 구현된 AI를 위한 생성형 범용 물리 엔진. RTX 4090에서 4300만 FPS의 초고속 시뮬레이션 및 생성 기능 제공."
-  github_url: "https://github.com/Genesis-Embodied-AI/Genesis"
-  paper_url: "https://arxiv.org/abs/2501.00599"
-  hf_url: ""
-  project_url: "https://genesis-world.readthedocs.io"
-  categories: [manipulation, locomotion, navigation]
-  hardware: [manipulator, humanoid, quadruped, mobile, drone]
-  learning: [RL, sim2real]
-  framework: [pytorch]
+  description_en: A generative and universal physics engine for robotics and embodied
+    AI. Ultra-fast simulation (43M FPS on RTX 4090) with generative capabilities.
+  description_ko: 로보틱스와 구현된 AI를 위한 생성형 범용 물리 엔진. RTX 4090에서 4300만 FPS의 초고속 시뮬레이션 및
+    생성 기능 제공.
+  github_url: https://github.com/Genesis-Embodied-AI/Genesis
+  paper_url: https://arxiv.org/abs/2501.00599
+  hf_url: ''
+  project_url: https://genesis-world.readthedocs.io
+  categories:
+  - manipulation
+  - locomotion
+  - navigation
+  hardware:
+  - manipulator
+  - humanoid
+  - quadruped
+  - mobile
+  - drone
+  learning:
+  - RL
+  - sim2real
+  framework:
+  - pytorch
   communication: []
   stats:
-    github_stars: 22000
-    github_forks: 1400
+    github_stars: 28523
+    github_forks: 2671
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2024-12-01"
-  tags: [simulation, physics-engine, generative, ultra-fast]
-
+    last_updated: '2026-04-19'
+  added_date: '2024-12-01'
+  tags:
+  - simulation
+  - physics-engine
+  - generative
+  - ultra-fast
 - id: groot
   name: GR00T N1
   org: NVIDIA
   year: 2025
-  description_en: "NVIDIA's humanoid foundation model with cross-embodiment generalization. Combines vision-language understanding with action generation."
-  description_ko: "NVIDIA의 교차 구현 일반화 기능을 갖춘 휴머노이드 파운데이션 모델. 비전-언어 이해와 행동 생성을 결합합니다."
-  github_url: "https://github.com/NVIDIA/Isaac-GR00T"
-  paper_url: "https://arxiv.org/abs/2503.14734"
-  hf_url: "https://huggingface.co/nvidia/GR00T-N1-2B"
-  project_url: "https://developer.nvidia.com/isaac/gr00t"
-  categories: [manipulation, whole-body]
-  hardware: [humanoid]
-  learning: [VLA, IL]
-  framework: [pytorch]
-  communication: [ros2]
+  description_en: NVIDIA's humanoid foundation model with cross-embodiment generalization.
+    Combines vision-language understanding with action generation.
+  description_ko: NVIDIA의 교차 구현 일반화 기능을 갖춘 휴머노이드 파운데이션 모델. 비전-언어 이해와 행동 생성을 결합합니다.
+  github_url: https://github.com/NVIDIA/Isaac-GR00T
+  paper_url: https://arxiv.org/abs/2503.14734
+  hf_url: https://huggingface.co/nvidia/GR00T-N1-2B
+  project_url: https://developer.nvidia.com/isaac/gr00t
+  categories:
+  - manipulation
+  - whole-body
+  hardware:
+  - humanoid
+  learning:
+  - VLA
+  - IL
+  framework:
+  - pytorch
+  communication:
+  - ros2
   stats:
-    github_stars: 3100
-    github_forks: 280
-    hf_downloads: 15000
-    last_updated: "2026-04-12"
-  added_date: "2025-03-19"
-  tags: [humanoid, foundation-model, NVIDIA, cross-embodiment]
-
+    github_stars: 6729
+    github_forks: 1137
+    hf_downloads: 283
+    last_updated: '2026-04-19'
+  added_date: '2025-03-19'
+  tags:
+  - humanoid
+  - foundation-model
+  - NVIDIA
+  - cross-embodiment
 - id: roboflamingo
   name: RoboFlamingo
   org: ByteDance
   year: 2023
-  description_en: "A vision-language manipulation policy that fine-tunes OpenFlamingo for robotic control on the CALVIN benchmark."
-  description_ko: "CALVIN 벤치마크에서 로봇 제어를 위해 OpenFlamingo를 파인튜닝한 비전-언어 조작 정책."
-  github_url: "https://github.com/RoboFlamingo/RoboFlamingo"
-  paper_url: "https://arxiv.org/abs/2311.01378"
-  hf_url: ""
-  project_url: ""
-  categories: [manipulation]
-  hardware: [manipulator]
-  learning: [VLA]
-  framework: [pytorch]
+  description_en: A vision-language manipulation policy that fine-tunes OpenFlamingo
+    for robotic control on the CALVIN benchmark.
+  description_ko: CALVIN 벤치마크에서 로봇 제어를 위해 OpenFlamingo를 파인튜닝한 비전-언어 조작 정책.
+  github_url: https://github.com/RoboFlamingo/RoboFlamingo
+  paper_url: https://arxiv.org/abs/2311.01378
+  hf_url: ''
+  project_url: ''
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  learning:
+  - VLA
+  framework:
+  - pytorch
   communication: []
   stats:
-    github_stars: 980
-    github_forks: 95
+    github_stars: 429
+    github_forks: 39
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2023-11-02"
-  tags: [VLA, CALVIN, OpenFlamingo]
-
+    last_updated: '2026-04-19'
+  added_date: '2023-11-02'
+  tags:
+  - VLA
+  - CALVIN
+  - OpenFlamingo
 - id: gr1
   name: GR-1
   org: BAAI / Beijing Academy of AI
   year: 2024
-  description_en: "Unleashing Large-Scale Video Generative Pre-Training for Visual Robot Manipulation. GPT-style pre-training on video then fine-tuned for robot control."
-  description_ko: "시각 로봇 조작을 위한 대규모 비디오 생성 사전학습. 비디오에서 GPT 스타일 사전학습 후 로봇 제어로 파인튜닝."
-  github_url: "https://github.com/bytedance/GR-1"
-  paper_url: "https://arxiv.org/abs/2312.13139"
-  hf_url: ""
-  project_url: "https://gr1-manipulation.github.io"
-  categories: [manipulation]
-  hardware: [manipulator]
-  learning: [VLA, IL]
-  framework: [pytorch]
+  description_en: Unleashing Large-Scale Video Generative Pre-Training for Visual
+    Robot Manipulation. GPT-style pre-training on video then fine-tuned for robot
+    control.
+  description_ko: 시각 로봇 조작을 위한 대규모 비디오 생성 사전학습. 비디오에서 GPT 스타일 사전학습 후 로봇 제어로 파인튜닝.
+  github_url: https://github.com/bytedance/GR-1
+  paper_url: https://arxiv.org/abs/2312.13139
+  hf_url: ''
+  project_url: https://gr1-manipulation.github.io
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  learning:
+  - VLA
+  - IL
+  framework:
+  - pytorch
   communication: []
   stats:
-    github_stars: 720
-    github_forks: 68
+    github_stars: 309
+    github_forks: 16
     hf_downloads: 0
-    last_updated: "2026-04-12"
-  added_date: "2024-01-01"
-  tags: [video-pretraining, GPT, manipulation]
-
+    last_updated: '2026-04-19'
+  added_date: '2024-01-01'
+  tags:
+  - video-pretraining
+  - GPT
+  - manipulation
 - id: crossformer
   name: CrossFormer
   org: UC Berkeley / others
   year: 2024
-  description_en: "A cross-embodiment transformer robot policy trained on 900k diverse robot trajectories. Flexible architecture for heterogeneous robots."
-  description_ko: "90만 개의 다양한 로봇 궤적으로 학습된 교차 구현 트랜스포머 로봇 정책. 이기종 로봇을 위한 유연한 아키텍처."
-  github_url: "https://github.com/rail-berkeley/crossformer"
-  paper_url: "https://arxiv.org/abs/2408.11812"
-  hf_url: "https://huggingface.co/rail-berkeley/crossformer"
-  project_url: "https://crossformer-model.github.io"
-  categories: [manipulation]
-  hardware: [manipulator, mobile]
-  learning: [IL, VLA]
-  framework: [jax]
+  description_en: A cross-embodiment transformer robot policy trained on 900k diverse
+    robot trajectories. Flexible architecture for heterogeneous robots.
+  description_ko: 90만 개의 다양한 로봇 궤적으로 학습된 교차 구현 트랜스포머 로봇 정책. 이기종 로봇을 위한 유연한 아키텍처.
+  github_url: https://github.com/rail-berkeley/crossformer
+  paper_url: https://arxiv.org/abs/2408.11812
+  hf_url: https://huggingface.co/rail-berkeley/crossformer
+  project_url: https://crossformer-model.github.io
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  - mobile
+  learning:
+  - IL
+  - VLA
+  framework:
+  - jax
   communication: []
   stats:
-    github_stars: 520
-    github_forks: 48
-    hf_downloads: 9000
-    last_updated: "2026-04-12"
-  added_date: "2024-08-21"
-  tags: [cross-embodiment, generalist, transformer]
-
+    github_stars: 282
+    github_forks: 35
+    hf_downloads: 22
+    last_updated: '2026-04-19'
+  added_date: '2024-08-21'
+  tags:
+  - cross-embodiment
+  - generalist
+  - transformer
 - id: open-pi-zero
   name: openpi (π0 Open Implementation)
   org: Physical Intelligence
   year: 2025
-  description_en: "Open implementation of the π0 flow-matching policy for robotic manipulation. Includes training code, pretrained checkpoints, and deployment tools."
-  description_ko: "로봇 조작을 위한 π0 플로우 매칭 정책 오픈 구현체. 학습 코드, 사전학습 체크포인트, 배포 도구를 포함합니다."
-  github_url: "https://github.com/Physical-Intelligence/openpi"
-  paper_url: "https://arxiv.org/abs/2410.24164"
-  hf_url: "https://huggingface.co/physical-intelligence/pi0"
-  project_url: "https://www.physicalintelligence.company/blog/pi0"
-  categories: [manipulation, dexterous]
-  hardware: [manipulator, humanoid]
-  learning: [VLA, diffusion]
-  framework: [jax]
+  description_en: Open implementation of the π0 flow-matching policy for robotic manipulation.
+    Includes training code, pretrained checkpoints, and deployment tools.
+  description_ko: 로봇 조작을 위한 π0 플로우 매칭 정책 오픈 구현체. 학습 코드, 사전학습 체크포인트, 배포 도구를 포함합니다.
+  github_url: https://github.com/Physical-Intelligence/openpi
+  paper_url: https://arxiv.org/abs/2410.24164
+  hf_url: https://huggingface.co/physical-intelligence/pi0
+  project_url: https://www.physicalintelligence.company/blog/pi0
+  categories:
+  - manipulation
+  - dexterous
+  hardware:
+  - manipulator
+  - humanoid
+  learning:
+  - VLA
+  - diffusion
+  framework:
+  - jax
   communication: []
   stats:
-    github_stars: 5800
-    github_forks: 520
-    hf_downloads: 21000
-    last_updated: "2026-04-12"
-  added_date: "2025-01-17"
-  tags: [flow-matching, pi0, open-weights, dexterous]
+    github_stars: 11365
+    github_forks: 1782
+    hf_downloads: 0
+    last_updated: '2026-04-19'
+  added_date: '2025-01-17'
+  tags:
+  - flow-matching
+  - pi0
+  - open-weights
+  - dexterous
