@@ -54,7 +54,6 @@ python scripts/generate_site.py   # README / docs/ 재생성 확인
 ### 2. 기능 기여 (대시보드 / 스크립트 / 자동화)
 
 기능 기여는 반드시 **Issue → 논의 → PR** 순서로 진행해주세요.  
-작업 범위가 크거나 설계 결정이 필요한 경우, 먼저 이슈에서 방향을 잡은 후 코드를 작성해야 나중에 방향이 어긋나는 일을 막을 수 있습니다.
 
 #### 흐름
 
@@ -81,7 +80,7 @@ python scripts/generate_site.py   # README / docs/ 재생성 확인
 #### 스타일 규칙
 
 - Python: 외부 포매터 규칙 없음, 기존 코드 스타일 유지
-- HTML/JS: Tailwind CSS, Alpine.js 사용 — 외부 라이브러리 추가 금지
+- HTML/JS: Tailwind CSS, Alpine.js 사용
 - 새 Python 함수 추가 시 `tests/` 에 단위 테스트 함께 작성
 
 ---
@@ -96,8 +95,6 @@ python scripts/generate_site.py   # README / docs/ 재생성 확인
 | **Validate Data** | YAML 스키마 검증 | `validate-pr.yml` |
 
 CI가 실패하면 리뷰 요청을 할 수 없습니다.  
-관리자는 보통 **3일 이내** 검토합니다.
-
 ---
 
 ### 분류 체계 (Taxonomy)
@@ -183,7 +180,6 @@ python scripts/generate_site.py   # verify README / docs/ output
 ### 2. Feature Contributions (Dashboard / Scripts / Automation)
 
 Feature contributions must follow the **Issue → Discussion → PR** flow.  
-For changes with significant scope or design decisions, please align with maintainers in an issue before writing code to avoid wasted effort.
 
 #### Flow
 
@@ -210,7 +206,7 @@ For changes with significant scope or design decisions, please align with mainta
 #### Style rules
 
 - Python: no external formatter required — match existing code style
-- HTML/JS: uses Tailwind CSS and Alpine.js — do not add new external libraries
+- HTML/JS: uses Tailwind CSS and Alpine.js
 - New Python functions must include unit tests in `tests/`
 
 ---
@@ -225,7 +221,6 @@ All PRs must pass the following CI checks before merging.
 | **Validate Data** | YAML schema validation | `validate-pr.yml` |
 
 If CI fails, you cannot request a review from maintainers.  
-Maintainers typically review within **3 days**.
 
 ---
 
