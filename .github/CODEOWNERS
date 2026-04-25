@@ -7,12 +7,12 @@
 
 # 기본 담당자 (모든 파일)
 # Default owner for everything
-*                   @jiho
+*                   @jih0-kim
 
 # 데이터 파일 — 반드시 관리자 검토 필요
 # Data files — always require maintainer review
-data/               @jiho
+data/               @jih0-kim
 
 # 스크립트 / CI 워크플로우
-scripts/            @jiho
-.github/            @jiho
+scripts/            @jih0-kim
+.github/            @jih0-kim
