@@ -185,6 +185,23 @@
     </div>
   </div>
 
+  <!-- ──────────── CHARTS ──────────── -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <!-- Top 5 Models -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          x-text="lang === 'ko' ? '⭐ 모델 Top 5 (GitHub Stars)' : '⭐ Top 5 Models (GitHub Stars)'"></h3>
+      <canvas id="timelineChart" height="160"></canvas>
+    </div>
+
+    <!-- Top 5 Datasets -->
+    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
+          x-text="lang === 'ko' ? '⭐ 데이터셋 Top 5 (GitHub Stars)' : '⭐ Top 5 Datasets (GitHub Stars)'"></h3>
+      <canvas id="categoryChart" height="160"></canvas>
+    </div>
+  </div>
+
   <!-- ──────────── FILTERS ──────────── -->
   <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
     <div class="flex items-center justify-between mb-3">
@@ -265,23 +282,6 @@
                   x-text="s"></button>
         </template>
       </div>
-    </div>
-  </div>
-
-  <!-- ──────────── CHARTS ──────────── -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-    <!-- Top 5 Models -->
-    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
-      <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
-          x-text="lang === 'ko' ? '⭐ 모델 Top 5 (GitHub Stars)' : '⭐ Top 5 Models (GitHub Stars)'"></h3>
-      <canvas id="timelineChart" height="160"></canvas>
-    </div>
-
-    <!-- Top 5 Datasets -->
-    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
-      <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3"
-          x-text="lang === 'ko' ? '⭐ 데이터셋 Top 5 (GitHub Stars)' : '⭐ Top 5 Datasets (GitHub Stars)'"></h3>
-      <canvas id="categoryChart" height="160"></canvas>
     </div>
   </div>
 
