@@ -95,21 +95,40 @@ def dataset_row(d: dict) -> str:
     )
 
 
-def generate_readme(models: list[dict], datasets: list[dict]) -> str:
+def tool_row(t: dict) -> str:
+    stats = t.get("stats", {})
+    stars = stats.get("github_stars", 0)
+    name_cell = link(t["name"], t.get("github_url") or t.get("project_url") or "")
+    paper = f"[📄]({t['paper_url']})" if t.get("paper_url") else ""
+    tool_type = t.get("type", "")
+    gpu = "✅" if t.get("gpu_accelerated") else "—"
+    ros = "✅" if t.get("ros_support") else "—"
+    langs = ", ".join(t.get("language", []))
+    return (
+        f"| {name_cell} | {t['org']} | {t['year']} | {tool_type} | {gpu} | {ros} | {langs} "
+        f"| {stars:,} | {paper} |"
+    )
+
+
+def generate_readme(models: list[dict], datasets: list[dict], tools: list[dict] | None = None) -> str:
+    tools = tools or []
     n_models = len(models)
     n_datasets = len(datasets)
-    n_orgs = len({m["org"] for m in models} | {d["org"] for d in datasets})
+    n_tools = len(tools)
+    n_orgs = len({m["org"] for m in models} | {d["org"] for d in datasets} | {t["org"] for t in tools})
 
     model_rows = "\n".join(model_row(m) for m in sorted(models, key=lambda x: -x.get("stats", {}).get("github_stars", 0)))
     dataset_rows = "\n".join(dataset_row(d) for d in sorted(datasets, key=lambda x: -x.get("stats", {}).get("github_stars", 0)))
+    tool_rows = "\n".join(tool_row(t) for t in sorted(tools, key=lambda x: -x.get("stats", {}).get("github_stars", 0)))
 
     return f"""# Awesome Physical AI [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> 🤖 Physical AI (Robotics & Embodied AI) 분야의 오픈소스 모델과 데이터셋을 체계적으로 정리한 큐레이션 리스트.
-> A curated list of open-source models and datasets for Physical AI (Robotics & Embodied AI).
+> 🤖 Physical AI (Robotics & Embodied AI) 분야의 오픈소스 모델, 데이터셋, 시뮬레이터를 체계적으로 정리한 큐레이션 리스트.
+> A curated list of open-source models, datasets, and simulators for Physical AI (Robotics & Embodied AI).
 
 [![Models](https://img.shields.io/badge/Models-{n_models}-blue)]({DASHBOARD_URL})
 [![Datasets](https://img.shields.io/badge/Datasets-{n_datasets}-green)]({DASHBOARD_URL})
+[![Simulators](https://img.shields.io/badge/Simulators-{n_tools}-purple)]({DASHBOARD_URL})
 [![Organizations](https://img.shields.io/badge/Organizations-{n_orgs}-orange)]({DASHBOARD_URL})
 [![Updated](https://img.shields.io/badge/Updated-{TODAY}-lightgrey)]({REPO_URL})
 [![Dashboard](https://img.shields.io/badge/🌐_Dashboard-Live-brightgreen)]({DASHBOARD_URL})
@@ -122,6 +141,7 @@ def generate_readme(models: list[dict], datasets: list[dict]) -> str:
 
 - [Models](#-models)
 - [Datasets](#-datasets)
+- [Simulators & Tools](#-simulators--tools)
 - [How to Contribute](#-how-to-contribute)
 - [Taxonomy](#-taxonomy)
 
@@ -144,6 +164,16 @@ def generate_readme(models: list[dict], datasets: list[dict]) -> str:
 | Name | Organization | Year | Category | Source | Modality | Trajectories | ⭐ Stars | Links |
 |------|-------------|------|----------|--------|----------|-------------|---------|-------|
 {dataset_rows}
+
+---
+
+## 🔬 Simulators & Tools
+
+> 스타 수 기준 내림차순 정렬 | Sorted by GitHub stars (auto-updated weekly)
+
+| Name | Organization | Year | Type | GPU | ROS2 | Language | ⭐ Stars | Paper |
+|------|-------------|------|------|-----|------|----------|---------|-------|
+{tool_rows}
 
 ---
 
@@ -189,16 +219,18 @@ A bot will automatically create a PR from your issue for admin review.
 # docs/data.json generation
 # ─────────────────────────────────────────────────────────────────────────────
 
-def generate_data_json(models: list[dict], datasets: list[dict]) -> dict:
+def generate_data_json(models: list[dict], datasets: list[dict], tools: list[dict]) -> dict:
     return {
         "metadata": {
             "last_updated": TODAY,
             "total_models": len(models),
             "total_datasets": len(datasets),
-            "total_orgs": len({m["org"] for m in models} | {d["org"] for d in datasets}),
+            "total_tools": len(tools),
+            "total_orgs": len({m["org"] for m in models} | {d["org"] for d in datasets} | {t["org"] for t in tools}),
         },
         "models": models,
         "datasets": datasets,
+        "tools": tools,
     }
 
 
@@ -209,15 +241,16 @@ def generate_data_json(models: list[dict], datasets: list[dict]) -> dict:
 def main() -> None:
     models = load_yaml(DATA_DIR / "models.yaml")
     datasets = load_yaml(DATA_DIR / "datasets.yaml")
+    tools = load_yaml(DATA_DIR / "tools.yaml")
 
     # Write README
-    readme_content = generate_readme(models, datasets)
+    readme_content = generate_readme(models, datasets, tools)
     README_PATH.write_text(readme_content, encoding="utf-8")
-    print(f"✅ README.md written ({len(models)} models, {len(datasets)} datasets)")
+    print(f"✅ README.md written ({len(models)} models, {len(datasets)} datasets, {len(tools)} tools)")
 
     # Write docs/data.json (kept for reference / API use)
     DOCS_DIR.mkdir(exist_ok=True)
-    data_json = generate_data_json(models, datasets)
+    data_json = generate_data_json(models, datasets, tools)
     json_str = json.dumps(data_json, ensure_ascii=False)
     (DOCS_DIR / "data.json").write_text(
         json.dumps(data_json, ensure_ascii=False, indent=2), encoding="utf-8"

@@ -1,11 +1,12 @@
 # Awesome Physical AI [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> 🤖 Physical AI (Robotics & Embodied AI) 분야의 오픈소스 모델과 데이터셋을 체계적으로 정리한 큐레이션 리스트.
-> A curated list of open-source models and datasets for Physical AI (Robotics & Embodied AI).
+> 🤖 Physical AI (Robotics & Embodied AI) 분야의 오픈소스 모델, 데이터셋, 시뮬레이터를 체계적으로 정리한 큐레이션 리스트.
+> A curated list of open-source models, datasets, and simulators for Physical AI (Robotics & Embodied AI).
 
-[![Models](https://img.shields.io/badge/Models-14-blue)](https://pytorchkorea.github.io/Awesome-Physical-AI)
+[![Models](https://img.shields.io/badge/Models-12-blue)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 [![Datasets](https://img.shields.io/badge/Datasets-10-green)](https://pytorchkorea.github.io/Awesome-Physical-AI)
-[![Organizations](https://img.shields.io/badge/Organizations-21-orange)](https://pytorchkorea.github.io/Awesome-Physical-AI)
+[![Simulators](https://img.shields.io/badge/Simulators-9-purple)](https://pytorchkorea.github.io/Awesome-Physical-AI)
+[![Organizations](https://img.shields.io/badge/Organizations-27-orange)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 [![Updated](https://img.shields.io/badge/Updated-2026-04-25-lightgrey)](https://github.com/PyTorchKorea/Awesome-Physical-AI)
 [![Dashboard](https://img.shields.io/badge/🌐_Dashboard-Live-brightgreen)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 
@@ -17,6 +18,7 @@
 
 - [Models](#-models)
 - [Datasets](#-datasets)
+- [Simulators & Tools](#-simulators--tools)
 - [How to Contribute](#-how-to-contribute)
 - [Taxonomy](#-taxonomy)
 
@@ -28,10 +30,8 @@
 
 | Name | Organization | Year | Category | Hardware | Learning | ⭐ Stars | Links |
 |------|-------------|------|----------|----------|----------|---------|-------|
-| [Genesis](https://github.com/Genesis-Embodied-AI/Genesis) | Genesis Authors (MIT/CMU/Stanford) | 2024 | manipulation, locomotion, navigation | manipulator, humanoid, quadruped, mobile, drone | RL, sim2real | 28,523 | [📄](https://arxiv.org/abs/2501.00599)  |
 | [LeRobot](https://github.com/huggingface/lerobot) | Hugging Face | 2024 | manipulation | manipulator | IL, diffusion, VLA | 23,337 | [📄](https://arxiv.org/abs/2408.01730) [🤗](https://huggingface.co/lerobot) |
 | [π0 (pi-zero)](https://github.com/Physical-Intelligence/openpi) | Physical Intelligence | 2024 | manipulation, whole-body | manipulator, humanoid | VLA, diffusion | 11,365 | [📄](https://arxiv.org/abs/2410.24164) [🤗](https://huggingface.co/physical-intelligence/pi0) |
-| [Isaac Lab](https://github.com/isaac-sim/IsaacLab) | NVIDIA | 2023 | manipulation, locomotion, navigation | manipulator, humanoid, quadruped, mobile | RL, IL, sim2real | 6,962 | [📄](https://arxiv.org/abs/2301.04195)  |
 | [GR00T N1](https://github.com/NVIDIA/Isaac-GR00T) | NVIDIA | 2025 | manipulation, whole-body | humanoid | VLA, IL | 6,729 | [📄](https://arxiv.org/abs/2503.14734) [🤗](https://huggingface.co/nvidia/GR00T-N1-2B) |
 | [OpenVLA](https://github.com/openvla/openvla) | Stanford / UC Berkeley | 2024 | manipulation | manipulator | VLA | 5,936 | [📄](https://arxiv.org/abs/2406.09246) [🤗](https://huggingface.co/openvla/openvla-7b) |
 | [Mobile ALOHA](https://github.com/MarkFzp/mobile-aloha) | Stanford | 2024 | manipulation, navigation, whole-body | mobile, manipulator | IL | 4,407 | [📄](https://arxiv.org/abs/2401.02117)  |
@@ -61,6 +61,24 @@
 | [DROID](https://github.com/droid-dataset/droid) | UC Berkeley / Stanford / others | 2024 | manipulation | real, teleoperation | rgb, rgbd, proprioception | 76,000 | 345 | [📄](https://arxiv.org/abs/2403.12945) [🤗](https://huggingface.co/datasets/droid-dataset/droid) |
 | [BridgeData V2](https://github.com/rail-berkeley/bridge_data_v2) | UC Berkeley | 2023 | manipulation | real, teleoperation | rgb, proprioception | 60,096 | 279 | [📄](https://arxiv.org/abs/2308.12952) [🤗](https://huggingface.co/datasets/rail-berkeley/bridge_orig) |
 | [RH20T](https://github.com/rh20t/rh20t_api) | Shanghai AI Lab | 2023 | manipulation, dexterous | real, teleoperation | rgb, rgbd, tactile, proprioception, audio | 110,000 | 105 | [📄](https://arxiv.org/abs/2307.00595)  |
+
+---
+
+## 🔬 Simulators & Tools
+
+> 스타 수 기준 내림차순 정렬 | Sorted by GitHub stars (auto-updated weekly)
+
+| Name | Organization | Year | Type | GPU | ROS2 | Language | ⭐ Stars | Paper |
+|------|-------------|------|------|-----|------|----------|---------|-------|
+| [Genesis](https://github.com/Genesis-Embodied-AI/Genesis) | Genesis Authors (MIT/CMU/Stanford) | 2024 | physics_engine | ✅ | — | python | 28,523 | [📄](https://arxiv.org/abs/2501.00599) |
+| [MuJoCo](https://github.com/google-deepmind/mujoco) | DeepMind / Google | 2022 | physics_engine | — | — | c, python, c++ | 8,700 | [📄](https://arxiv.org/abs/2103.09615) |
+| [Isaac Lab](https://github.com/isaac-sim/IsaacLab) | NVIDIA | 2023 | rl_framework | ✅ | ✅ | python | 6,962 | [📄](https://arxiv.org/abs/2301.04195) |
+| [dm_control](https://github.com/google-deepmind/dm_control) | DeepMind | 2018 | benchmark | — | — | python | 3,800 | [📄](https://arxiv.org/abs/2006.12983) |
+| [Brax](https://github.com/google/brax) | Google | 2021 | physics_engine | ✅ | — | python | 2,400 | [📄](https://arxiv.org/abs/2106.13281) |
+| [Robosuite](https://github.com/ARISE-Initiative/robosuite) | Stanford / UT Austin | 2020 | benchmark | — | — | python | 1,700 | [📄](https://arxiv.org/abs/2009.12293) |
+| [RoboCasa](https://github.com/robocasa/robocasa) | UT Austin | 2024 | full_stack | — | — | python | 1,400 | [📄](https://arxiv.org/abs/2406.02523) |
+| [SimplerEnv](https://github.com/simpler-env/SimplerEnv) | UC Berkeley / Google | 2024 | benchmark | — | — | python | 950 | [📄](https://arxiv.org/abs/2405.05941) |
+| [SAPIEN](https://github.com/haosulab/SAPIEN) | UC San Diego / others | 2020 | physics_engine | ✅ | — | python, c++ | 900 | [📄](https://arxiv.org/abs/2003.08515) |
 
 ---
 

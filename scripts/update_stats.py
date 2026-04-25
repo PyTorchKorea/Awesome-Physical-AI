@@ -134,6 +134,22 @@ def update_entry(entry: dict) -> dict:
     return entry
 
 
+def update_tool_entry(entry: dict) -> dict:
+    """Like update_entry but tools only track github_stars (no HF downloads)."""
+    entry_id = entry.get("id", "?")
+    log.info("Updating tool: %s", entry_id)
+    stats = entry.setdefault("stats", {})
+
+    gh_stats = fetch_github_stats(entry.get("github_url", ""))
+    if gh_stats:
+        stats["github_stars"] = gh_stats.get("github_stars", 0)
+        log.info("  stars=%d", stats["github_stars"])
+    time.sleep(0.5)
+
+    stats["last_updated"] = TODAY
+    return entry
+
+
 def update_file(yaml_path: Path) -> int:
     if not yaml_path.exists():
         log.error("File not found: %s", yaml_path)
@@ -149,11 +165,27 @@ def update_file(yaml_path: Path) -> int:
     return len(entries)
 
 
+def update_tools_file(yaml_path: Path) -> int:
+    if not yaml_path.exists():
+        log.error("File not found: %s", yaml_path)
+        return 0
+    entries = load_yaml(yaml_path)
+    for i, entry in enumerate(entries):
+        try:
+            entries[i] = update_tool_entry(entry)
+        except Exception as exc:
+            log.error("Failed to update tool '%s': %s", entry.get("id"), exc)
+    save_yaml(yaml_path, entries)
+    log.info("Saved %d tools → %s", len(entries), yaml_path)
+    return len(entries)
+
+
 def main() -> None:
     if not GITHUB_TOKEN:
         log.warning("GITHUB_TOKEN not set — rate-limited to 60 requests/hour.")
     update_file(DATA_DIR / "models.yaml")
     update_file(DATA_DIR / "datasets.yaml")
+    update_tools_file(DATA_DIR / "tools.yaml")
     log.info("Done.")
 
 
