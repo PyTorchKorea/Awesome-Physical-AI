@@ -103,7 +103,7 @@ def to_int(value: str, default: int = 0) -> int:
 
 def build_model_entry(form: dict) -> dict:
     return {
-        "id": re.sub(r"[^a-z0-9-]", "", form.get("id_(slug)", form.get("id", "")).lower().replace(" ", "-")),
+        "id": re.sub(r"[^a-z0-9-]", "", form.get("id_slug", form.get("id", "")).lower().replace(" ", "-")),
         "name": form.get("name", ""),
         "org": form.get("organization", ""),
         "year": to_int(form.get("year", str(date.today().year))),
@@ -125,13 +125,13 @@ def build_model_entry(form: dict) -> dict:
             "last_updated": TODAY,
         },
         "added_date": TODAY,
-        "tags": parse_list(form.get("tags_(optional)", form.get("tags", ""))),
+        "tags": parse_list(form.get("tags_optional", form.get("tags", ""))),
     }
 
 
 def build_dataset_entry(form: dict) -> dict:
     return {
-        "id": re.sub(r"[^a-z0-9-]", "", form.get("id_(slug)", form.get("id", "")).lower().replace(" ", "-")),
+        "id": re.sub(r"[^a-z0-9-]", "", form.get("id_slug", form.get("id", "")).lower().replace(" ", "-")),
         "name": form.get("name", ""),
         "org": form.get("organization", ""),
         "year": to_int(form.get("year", str(date.today().year))),
@@ -174,7 +174,7 @@ def build_tool_entry(form: dict) -> dict:
     languages = parse_list(raw_lang)
 
     return {
-        "id": re.sub(r"[^a-z0-9-]", "", form.get("id_(slug)", form.get("id", "")).lower().replace(" ", "-")),
+        "id": re.sub(r"[^a-z0-9-]", "", form.get("id_slug", form.get("id", "")).lower().replace(" ", "-")),
         "name": form.get("name", ""),
         "org": form.get("organization", ""),
         "year": to_int(form.get("year", str(date.today().year))),
@@ -192,7 +192,7 @@ def build_tool_entry(form: dict) -> dict:
             "last_updated": TODAY,
         },
         "added_date": TODAY,
-        "tags": parse_list(form.get("tags_(optional)", form.get("tags", ""))),
+        "tags": parse_list(form.get("tags_optional", form.get("tags", ""))),
     }
 
 
