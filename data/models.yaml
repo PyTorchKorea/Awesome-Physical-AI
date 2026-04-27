@@ -386,3 +386,30 @@
   - cross-embodiment
   - generalist
   - transformer
+- id: custom
+  name: ㅇㄹㄴ
+  org: ㅇㄴㄹ
+  year: 1212
+  description_en: ㅇㄹㄴㄷㄹㄴㄹㅇㄴㄹㅎ
+  description_ko: ''
+  github_url: ㄴㄹㄴ
+  paper_url: ㄴㄹㅇ
+  hf_url: ㄴㅇㄹ
+  project_url: ㅇㄴㄹㄹ
+  categories:
+  - navigation
+  - dexterous
+  hardware:
+  - biped
+  - mobile
+  learning:
+  - VLA
+  framework: []
+  communication: []
+  stats:
+    github_stars: 0
+    github_forks: 0
+    hf_downloads: 0
+    last_updated: '2026-04-27'
+  added_date: '2026-04-27'
+  tags: []
