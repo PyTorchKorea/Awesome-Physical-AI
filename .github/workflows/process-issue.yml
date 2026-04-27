@@ -64,14 +64,18 @@ jobs:
           git checkout -b "$BRANCH"
           git add data/ docs/data.json docs/index.html README.md
           git commit -m "feat: add entry from issue #${ISSUE_NUMBER}"
-          git push origin "$BRANCH"
+          git push --force origin "$BRANCH"
           PR_BODY=$(printf 'Resolves #%s\n\nAuto-generated from issue by @%s.\n\n**Please review the entry before merging.**' "${ISSUE_NUMBER}" "${ISSUE_AUTHOR}")
-          gh pr create \
-            --title "Add entry: ${ISSUE_TITLE}" \
-            --body "$PR_BODY" \
-            --head "$BRANCH" \
-            --base main \
-            --label "review-needed"
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
+          if [ -z "$EXISTING_PR" ]; then
+            gh pr create \
+              --title "Add entry: ${ISSUE_TITLE}" \
+              --body "$PR_BODY" \
+              --head "$BRANCH" \
+              --base main
+          else
+            echo "PR #${EXISTING_PR} already exists for this branch — skipping creation"
+          fi
 
       - name: Comment on issue
         env:
