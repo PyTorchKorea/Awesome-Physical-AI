@@ -179,11 +179,12 @@ def generate_readme(models: list[dict], datasets: list[dict], tools: list[dict] 
 
 ## 🤝 How to Contribute
 
-새 모델 또는 데이터셋을 추가하려면 GitHub Issue를 열어주세요.
-To add a new model or dataset, please open a GitHub Issue:
+새 항목을 추가하려면 GitHub Issue를 열어주세요.
+To add a new entry, please open a GitHub Issue:
 
 - **[➕ Add a Model]({REPO_URL}/issues/new?template=add-model.yml)**
 - **[➕ Add a Dataset]({REPO_URL}/issues/new?template=add-dataset.yml)**
+- **[➕ Add a Simulator]({REPO_URL}/issues/new?template=add-simulator.yml)**
 
 이슈가 등록되면 봇이 자동으로 PR을 생성하고, 관리자가 검토 후 머지합니다.
 A bot will automatically create a PR from your issue for admin review.
