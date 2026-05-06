@@ -386,3 +386,33 @@
   - cross-embodiment
   - generalist
   - transformer
+- id: robovlms
+  name: RoboVLMs
+  org: Multiple
+  year: 2025
+  description_en: A vision-language-action framework for robotics that integrates
+    visual perception and language understanding to generate end-to-end manipulation
+    policies from multimodal inputs.
+  description_ko: 이미지와 자연어를 입력으로 받아 로봇의 행동을 직접 생성하는 vision-language-action 기반의 엔드투엔드(end-to-end)
+    로봇 정책 모델입니다.
+  github_url: https://github.com/Robot-VLAs/RoboVLMs
+  paper_url: https://arxiv.org/abs/2412.14058
+  hf_url: https://huggingface.co/robovlms/RoboVLMs
+  project_url: https://robovlms.github.io/
+  categories:
+  - manipulation
+  hardware:
+  - manipulator
+  learning:
+  - VLA
+  - IL
+  framework:
+  - pytorch
+  communication: []
+  stats:
+    github_stars: 0
+    github_forks: 0
+    hf_downloads: 0
+    last_updated: '2026-05-06'
+  added_date: '2026-05-06'
+  tags: []
