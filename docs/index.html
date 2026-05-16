@@ -78,7 +78,7 @@
     <div class="relative flex-1 max-w-md">
       <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
       <input
-        x-model="search"
+        x-model.debounce.300ms="search"
         type="text"
         :placeholder="lang === 'ko' ? '모델, 기관, 태그 검색...' : 'Search models, orgs, tags...'"
         class="w-full pl-9 pr-4 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700
@@ -701,11 +701,79 @@ function app() {
       this.modelPage = 1;
       this.datasetPage = 1;
       this.toolPage = 1;
+      this.syncToURL();
     },
 
     clearFilters() {
       this.filters = { years: [], categories: [], hardware: [], learning: [], sources: [], toolTypes: [] };
       this.search = '';
+      this.modelPage = 1;
+      this.datasetPage = 1;
+      this.toolPage = 1;
+      this.syncToURL();
+    },
+
+    // ── URL 파라미터 동기화 ──
+    // URL 파라미터 목록 (필터 추가 시 여기도 수정):
+    //   tab      → activeTab        (허용: models, datasets, tools)
+    //   q        → search           (문자열)
+    //   sort     → sortBy           (허용: stars, year_desc, year_asc, name)
+    //   year     → filters.years    (쉼표 구분 정수: 2023,2024)
+    //   category → filters.categories (쉼표 구분: manipulation,locomotion)
+    //   hardware → filters.hardware   (쉼표 구분: humanoid,mobile)
+    //   learning → filters.learning   (쉼표 구분: VLA,IL,diffusion)
+    //   source   → filters.sources    (쉼표 구분: real,simulation)
+    //   toolType → filters.toolTypes  (쉼표 구분: physics_engine,benchmark)
+    syncToURL() {
+      const p = new URLSearchParams();
+      // 기본값이 아닌 경우만 URL에 포함 (필터 추가 시 여기도 수정)
+      if (this.activeTab !== 'models') p.set('tab', this.activeTab);
+      if (this.search) p.set('q', this.search);
+      if (this.sortBy !== 'stars') p.set('sort', this.sortBy);
+      if (this.filters.years.length) p.set('year', this.filters.years.join(','));
+      if (this.filters.categories.length) p.set('category', this.filters.categories.join(','));
+      if (this.filters.hardware.length) p.set('hardware', this.filters.hardware.join(','));
+      if (this.filters.learning.length) p.set('learning', this.filters.learning.join(','));
+      if (this.filters.sources.length) p.set('source', this.filters.sources.join(','));
+      if (this.filters.toolTypes.length) p.set('toolType', this.filters.toolTypes.join(','));
+
+      const qs = p.toString();
+      const url = location.pathname + (qs ? '?' + qs : '');
+
+      // 현재 URL과 같으면 스킵 (중복 히스토리 방지)
+      if (url === location.pathname + location.search) return;
+
+      history.pushState(null, '', url);
+    },
+
+    // ── URL → 상태 복원 (필터 추가 시 여기도 수정) ──
+    loadFromURL() {
+      const p = new URLSearchParams(location.search);
+
+      // 허용 목록 검증 (필터 추가 시 여기도 수정)
+      const tab = p.get('tab');
+      if (['models', 'datasets', 'tools'].includes(tab)) this.activeTab = tab;
+
+      if (p.has('q')) this.search = p.get('q');
+
+      const sort = p.get('sort');
+      if (['stars', 'year_desc', 'year_asc', 'name'].includes(sort)) this.sortBy = sort;
+
+      if (p.has('year')) this.filters.years = p.get('year').split(',').map(Number).filter(n => !isNaN(n));
+      if (p.has('category')) this.filters.categories = p.get('category').split(',');
+      if (p.has('hardware')) this.filters.hardware = p.get('hardware').split(',');
+      if (p.has('learning')) this.filters.learning = p.get('learning').split(',');
+      if (p.has('source')) this.filters.sources = p.get('source').split(',');
+      if (p.has('toolType')) this.filters.toolTypes = p.get('toolType').split(',');
+    },
+
+    // ── 뒤로가기/앞으로가기 핸들러 (pushState 사용 시 필수) ──
+    _handlePopState() {
+      this.filters = { years: [], categories: [], hardware: [], learning: [], sources: [], toolTypes: [] };
+      this.search = '';
+      this.activeTab = 'models';
+      this.sortBy = 'stars';
+      this.loadFromURL();
       this.modelPage = 1;
       this.datasetPage = 1;
       this.toolPage = 1;
@@ -798,6 +866,17 @@ function app() {
       } catch (e) {
         console.error('Failed to load data:', e);
       }
+
+      // ── URL 파라미터 연결 (데이터 로드 후 호출해야 필터링 정상 동작) ──
+      this.loadFromURL();
+
+      // 탭/정렬/검색 변경 감지 → URL 동기화
+      this.$watch('activeTab', () => this.syncToURL());
+      this.$watch('sortBy', () => this.syncToURL());
+      this.$watch('search', () => this.syncToURL());
+
+      // 뒤로가기/앞으로가기 → URL에서 상태 복원
+      window.addEventListener('popstate', () => this._handlePopState());
     }
   }
 }
