@@ -1,10 +1,10 @@
 {
   "metadata": {
-    "last_updated": "2026-05-03",
-    "total_models": 12,
+    "last_updated": "2026-05-17",
+    "total_models": 13,
     "total_datasets": 10,
     "total_tools": 9,
-    "total_orgs": 27
+    "total_orgs": 28
   },
   "models": [
     {
@@ -480,6 +480,40 @@
         "generalist",
         "transformer"
       ]
+    },
+    {
+      "id": "robovlms",
+      "name": "RoboVLMs",
+      "org": "Multiple",
+      "year": 2025,
+      "description_en": "A systematically optimized VLA  framework for generalist robots. It easily transfers various foundation VLMs into robust control policies with minimal manual design and supports cross-embodiment data integration.",
+      "description_ko": "범용 로봇을 위해 체계적으로 최적화된 VLA 프레임워크. 최소한의 설계로 다양한 파운데이션 VLM을 강건한 로봇 제어 정책으로 전환하며, 다기종 로봇 데이터 통합을 지원합니다.",
+      "github_url": "https://github.com/Robot-VLAs/RoboVLMs",
+      "paper_url": "https://arxiv.org/abs/2412.14058",
+      "hf_url": "https://huggingface.co/robovlms/RoboVLMs",
+      "project_url": "https://robovlms.github.io/",
+      "categories": [
+        "manipulation"
+      ],
+      "hardware": [
+        "manipulator"
+      ],
+      "learning": [
+        "VLA",
+        "IL"
+      ],
+      "framework": [
+        "pytorch"
+      ],
+      "communication": [],
+      "stats": {
+        "github_stars": 0,
+        "github_forks": 0,
+        "hf_downloads": 0,
+        "last_updated": "2026-05-17"
+      },
+      "added_date": "2026-05-17",
+      "tags": []
     }
   ],
   "datasets": [
