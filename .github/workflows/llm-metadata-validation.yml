@@ -1,0 +1,96 @@
+name: LLM Metadata Validation
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+      - "scripts/validate_llm_metadata.py"
+      - "tests/test_validate_llm_metadata.py"
+      - ".github/workflows/llm-metadata-validation.yml"
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Validation mode"
+        required: false
+        default: "report"
+        type: choice
+        options:
+          - report
+          - strict
+
+jobs:
+  validate-llm-metadata:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      VALIDATION_MODE: ${{ inputs.mode || 'report' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Detect newly added entry IDs
+        id: changed-ids
+        if: github.event_name == 'pull_request'
+        run: |
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          ADDED_IDS="$(git diff --unified=0 "${BASE_SHA}" "${HEAD_SHA}" -- data/models.yaml data/datasets.yaml data/tools.yaml \
+            | rg '^\+\s*id:\s*' -o -r '$0' \
+            | sed -E 's/^\+\s*id:\s*//' \
+            | tr -d '"' \
+            | tr '\n' ',' \
+            | sed 's/,$//')"
+          echo "entry_ids=${ADDED_IDS}" >> "$GITHUB_OUTPUT"
+
+      - name: Skip when no new metadata entries
+        if: github.event_name == 'pull_request' && steps.changed-ids.outputs.entry_ids == ''
+        run: |
+          mkdir -p reports
+          cat <<EOF > reports/llm_validation_report.json
+          {"mode":"${VALIDATION_MODE}","status":"skipped","skipped_reason":"No newly added metadata entries in this PR.","counts":{"pass":0,"warning":0,"fail":0},"results":[]}
+          EOF
+          cat <<EOF > reports/llm_validation_summary.md
+          # LLM Metadata Validation
+          - Mode: `${VALIDATION_MODE}`
+          - Status: `skipped`
+          - Pass: `0`
+          - Warning: `0`
+          - Fail: `0`
+          - Skipped reason: No newly added metadata entries in this PR.
+          EOF
+
+      - name: Run LLM metadata validation
+        if: github.event_name != 'pull_request' || steps.changed-ids.outputs.entry_ids != ''
+        run: >
+          python scripts/validate_llm_metadata.py
+          --mode "${VALIDATION_MODE}"
+          --entry-ids "${{ steps.changed-ids.outputs.entry_ids }}"
+          --output reports/llm_validation_report.json
+          --summary-output reports/llm_validation_summary.md
+
+      - name: Publish Actions summary
+        if: always()
+        run: cat reports/llm_validation_summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-validation-report
+          path: |
+            reports/llm_validation_report.json
+            reports/llm_validation_summary.md
