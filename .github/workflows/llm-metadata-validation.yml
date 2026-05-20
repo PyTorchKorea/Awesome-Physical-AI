@@ -60,10 +60,10 @@ jobs:
         if: github.event_name == 'pull_request' && steps.changed-ids.outputs.entry_ids == ''
         run: |
           mkdir -p reports
-          cat <<'EOF' > reports/llm_validation_report.json
+          cat <<EOF > reports/llm_validation_report.json
           {"mode":"${VALIDATION_MODE}","status":"skipped","skipped_reason":"No newly added metadata entries in this PR.","counts":{"pass":0,"warning":0,"fail":0},"results":[]}
           EOF
-          cat <<'EOF' > reports/llm_validation_summary.md
+          cat <<EOF > reports/llm_validation_summary.md
           # LLM Metadata Validation
           - Mode: `${VALIDATION_MODE}`
           - Status: `skipped`
