@@ -21,10 +21,10 @@
   - pytorch
   communication: []
   stats:
-    github_stars: 23709
-    github_forks: 4419
+    github_stars: 24277
+    github_forks: 4615
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2024-06-01'
   tags:
   - imitation-learning
@@ -55,10 +55,10 @@
   - pytorch
   communication: []
   stats:
-    github_stars: 11638
-    github_forks: 1853
+    github_stars: 11974
+    github_forks: 1947
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2024-10-31'
   tags:
   - foundation-model
@@ -87,10 +87,10 @@
   - pytorch
   communication: []
   stats:
-    github_stars: 6051
-    github_forks: 719
-    hf_downloads: 2085608
-    last_updated: '2026-05-03'
+    github_stars: 6243
+    github_forks: 742
+    hf_downloads: 1767121
+    last_updated: '2026-05-24'
   added_date: '2024-06-13'
   tags:
   - VLA
@@ -119,10 +119,10 @@
   - jax
   communication: []
   stats:
-    github_stars: 1642
-    github_forks: 271
-    hf_downloads: 74
-    last_updated: '2026-05-03'
+    github_stars: 1655
+    github_forks: 270
+    hf_downloads: 409
+    last_updated: '2026-05-24'
   added_date: '2023-10-01'
   tags:
   - generalist
@@ -151,10 +151,10 @@
   communication:
   - ros2
   stats:
-    github_stars: 1917
-    github_forks: 380
+    github_stars: 1968
+    github_forks: 383
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2023-04-01'
   tags:
   - ALOHA
@@ -183,10 +183,10 @@
   - pytorch
   communication: []
   stats:
-    github_stars: 4091
-    github_forks: 759
+    github_stars: 4186
+    github_forks: 772
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2023-03-07'
   tags:
   - diffusion
@@ -217,10 +217,10 @@
   communication:
   - ros2
   stats:
-    github_stars: 4414
-    github_forks: 733
+    github_stars: 4427
+    github_forks: 730
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2024-01-04'
   tags:
   - mobile-manipulation
@@ -249,10 +249,10 @@
   communication:
   - ros2
   stats:
-    github_stars: 840
+    github_stars: 847
     github_forks: 122
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2024-06-14'
   tags:
   - humanoid
@@ -282,10 +282,10 @@
   communication:
   - ros2
   stats:
-    github_stars: 6912
-    github_forks: 1169
-    hf_downloads: 297
-    last_updated: '2026-05-03'
+    github_stars: 7105
+    github_forks: 1212
+    hf_downloads: 224
+    last_updated: '2026-05-24'
   added_date: '2025-03-19'
   tags:
   - humanoid
@@ -313,10 +313,10 @@
   - pytorch
   communication: []
   stats:
-    github_stars: 429
+    github_stars: 434
     github_forks: 38
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2023-11-02'
   tags:
   - VLA
@@ -348,7 +348,7 @@
     github_stars: 310
     github_forks: 16
     hf_downloads: 0
-    last_updated: '2026-05-03'
+    last_updated: '2026-05-24'
   added_date: '2024-01-01'
   tags:
   - video-pretraining
@@ -377,10 +377,10 @@
   - jax
   communication: []
   stats:
-    github_stars: 281
-    github_forks: 35
-    hf_downloads: 13
-    last_updated: '2026-05-03'
+    github_stars: 283
+    github_forks: 36
+    hf_downloads: 11
+    last_updated: '2026-05-24'
   added_date: '2024-08-21'
   tags:
   - cross-embodiment
