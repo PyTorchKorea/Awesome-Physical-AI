@@ -185,7 +185,7 @@ def find_duplicate_matches(candidate: Candidate, existing_entries: list[dict]) -
     return matches
 
 
-def assess_relevance(title: str, summary: str) -> tuple[str, list[str], list[str], list[str]]:
+def assess_relevance_details(title: str, summary: str) -> tuple[str, list[str], list[str], list[str]]:
     text = normalize_text(f"{title} {summary}")
     reasons: list[str] = []
 
@@ -204,6 +204,10 @@ def assess_relevance(title: str, summary: str) -> tuple[str, list[str], list[str
 
     reasons.append("no strong Physical AI keyword evidence")
     return "low", reasons, [], []
+
+def assess_relevance(title: str, summary: str) -> tuple[str, list[str]]:
+    relevance, reasons, _keyword_hits, _exclusion_hits = assess_relevance_details(title, summary)
+    return relevance, reasons
 
 
 def inspect_github_readme(slug: str) -> tuple[str, str, list[str]]:
@@ -429,7 +433,7 @@ def build_artifact_availability(candidate: Candidate) -> dict[str, Any]:
         "verified_project_pages": [c.url for c in verified_project_pages],
     }
 
-def decide_recommendation(candidate: Candidate) -> tuple[str, list[str], str]:
+def decide_recommendation_details(candidate: Candidate) -> tuple[str, list[str], str]:
     reasons: list[str] = []
     availability = candidate.artifact_availability or build_artifact_availability(candidate)
     available_links = [c for c in candidate.checks if c.status == "available" and c.kind != "paper"]
@@ -485,8 +489,19 @@ def decide_recommendation(candidate: Candidate) -> tuple[str, list[str], str]:
     reasons.append("requires maintainer review")
     return "needs_review", reasons, "normal"
 
+def decide_recommendation(candidate: Candidate) -> tuple[str, list[str]]:
+    recommendation, reasons, _review_bucket = decide_recommendation_details(candidate)
+    return recommendation, reasons
+
 def candidate_review_payload(candidate: Candidate) -> dict[str, Any]:
     return {
+        "question": (
+            "Review this candidate for Awesome-Physical-AI. Decide whether it is an official, open "
+            "Physical AI / robotics / embodied AI model, dataset, benchmark, simulator, or tool. "
+            "Exclude autonomous-driving-only entries, unofficial reimplementations, fine-tunes, "
+            "closed/private artifacts, and paper-only entries unless they clearly provide a useful "
+            "official artifact."
+        ),
         "title": candidate.title,
         "abstract": candidate.summary,
         "authors": candidate.authors,
@@ -540,9 +555,13 @@ def run_llm_review_command(candidate: Candidate, command: str) -> dict[str, Any]
     hard-coding API keys or model choices into repository code.
     """
     payload = json.dumps(candidate_review_payload(candidate), ensure_ascii=False)
+    cmd = shlex.split(command)
+    if cmd and cmd[0] in {"python", "python3"}:
+        cmd[0] = sys.executable
+
     try:
         result = subprocess.run(
-            shlex.split(command),
+            cmd,
             input=payload,
             text=True,
             capture_output=True,
@@ -656,7 +675,7 @@ def evaluate_candidates(
             relevance_reasons,
             candidate.keyword_hits,
             candidate.exclusion_hits,
-        ) = assess_relevance(candidate.title, candidate.summary)
+        ) = assess_relevance_details(candidate.title, candidate.summary)
         candidate.reasons.extend(relevance_reasons)
         candidate.duplicate_matches = find_duplicate_matches(candidate, existing_entries)
 
@@ -673,7 +692,7 @@ def evaluate_candidates(
             ]
 
         candidate.artifact_availability = build_artifact_availability(candidate)
-        recommendation, decision_reasons, review_bucket = decide_recommendation(candidate)
+        recommendation, decision_reasons, review_bucket = decide_recommendation_details(candidate)
         candidate.recommendation = recommendation
         candidate.review_bucket = review_bucket
         candidate.reasons.extend(decision_reasons)
