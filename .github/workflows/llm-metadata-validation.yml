@@ -7,18 +7,7 @@ on:
       - "scripts/validate_llm_metadata.py"
       - "tests/test_validate_llm_metadata.py"
       - ".github/workflows/llm-metadata-validation.yml"
-  schedule:
-    - cron: "0 2 * * 1"
   workflow_dispatch:
-    inputs:
-      mode:
-        description: "Validation mode"
-        required: false
-        default: "report"
-        type: choice
-        options:
-          - report
-          - strict
 
 jobs:
   validate-llm-metadata:
@@ -28,7 +17,6 @@ jobs:
       pull-requests: write
     env:
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-      VALIDATION_MODE: ${{ inputs.mode || 'report' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,15 +50,14 @@ jobs:
         run: |
           mkdir -p reports
           cat <<EOF > reports/llm_validation_report.json
-          {"mode":"${VALIDATION_MODE}","status":"skipped","skipped_reason":"No newly added metadata entries in this PR.","counts":{"pass":0,"warning":0,"fail":0},"results":[]}
+          {"status":"skipped","skipped_reason":"No newly added metadata entries in this PR.","counts":{"pass":0,"warning":0,"fail":0},"results":[]}
           EOF
           cat <<EOF > reports/llm_validation_summary.md
           # LLM Metadata Validation
-          - Mode: `${VALIDATION_MODE}`
-          - Status: `skipped`
-          - Pass: `0`
-          - Warning: `0`
-          - Fail: `0`
+          - Status: \`skipped\`
+          - Pass: \`0\`
+          - Warning: \`0\`
+          - Fail: \`0\`
           - Skipped reason: No newly added metadata entries in this PR.
           EOF
 
@@ -78,14 +65,9 @@ jobs:
         if: github.event_name != 'pull_request' || steps.changed-ids.outputs.entry_ids != ''
         run: >
           python scripts/validate_llm_metadata.py
-          --mode "${VALIDATION_MODE}"
           --entry-ids "${{ steps.changed-ids.outputs.entry_ids }}"
           --output reports/llm_validation_report.json
           --summary-output reports/llm_validation_summary.md
-
-      - name: Publish Actions summary
-        if: always()
-        run: cat reports/llm_validation_summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Comment validation result on PR
         if: github.event_name == 'pull_request' && always()
@@ -127,11 +109,3 @@ jobs:
               core.info(`Created validation comment: ${created.data.id}`);
             }
 
-      - name: Upload validation report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: llm-validation-report
-          path: |
-            reports/llm_validation_report.json
-            reports/llm_validation_summary.md

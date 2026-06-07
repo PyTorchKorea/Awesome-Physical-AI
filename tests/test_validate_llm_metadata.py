@@ -77,7 +77,7 @@ def test_validate_entry_pass_case():
         }
     )
 
-    result = vlm.validate_entry("model", _entry(), fetcher, validator, mode="report")
+    result = vlm.validate_entry("model", _entry(), fetcher, validator)
 
     assert result.final_verdict == "pass"
     assert result.evidence_sources == ["README", "Abstract"]
@@ -110,7 +110,6 @@ def test_validate_entry_invalid_tag_case():
         _entry(tags=["manipulation", "humanoid"]),
         fetcher,
         validator,
-        mode="report",
     )
 
     assert result.final_verdict == "fail"
@@ -144,7 +143,6 @@ def test_validate_entry_exaggerated_summary_case():
         _entry(description_en="Supports whole-body humanoid control for many robots."),
         fetcher,
         validator,
-        mode="report",
     )
 
     assert result.final_verdict == "fail"
@@ -174,7 +172,7 @@ def test_validate_entry_insufficient_evidence_case():
         }
     )
 
-    result = vlm.validate_entry("model", _entry(), fetcher, validator, mode="report")
+    result = vlm.validate_entry("model", _entry(), fetcher, validator)
 
     assert result.final_verdict == "warning"
     assert result.evidence_issues == ["README evidence unavailable", "Abstract evidence unavailable"]
@@ -200,7 +198,7 @@ def test_validate_entry_retry_exhausted_becomes_warning():
         }
     )
 
-    result = vlm.validate_entry("model", _entry(), fetcher, validator, mode="report")
+    result = vlm.validate_entry("model", _entry(), fetcher, validator)
 
     assert result.final_verdict == "warning"
     assert result.tag_score == 0.0
@@ -209,7 +207,7 @@ def test_validate_entry_retry_exhausted_becomes_warning():
     assert any("status 503" in issue for issue in result.evidence_issues)
 
 
-def test_build_report_counts_and_strict_exit_code():
+def test_build_report_counts_and_exit_code():
     results = [
         vlm.ValidationResult(
             entry_id="a",
@@ -226,7 +224,6 @@ def test_build_report_counts_and_strict_exit_code():
             unsupported_claims=[],
             evidence_sources=["README"],
             evidence_issues=[],
-            mode="strict",
         ),
         vlm.ValidationResult(
             entry_id="b",
@@ -243,14 +240,13 @@ def test_build_report_counts_and_strict_exit_code():
             unsupported_claims=[],
             evidence_sources=["README"],
             evidence_issues=[],
-            mode="strict",
         ),
     ]
 
-    report = vlm.build_report(results, mode="strict")
+    report = vlm.build_report(results)
 
     assert report["counts"] == {"pass": 1, "warning": 0, "fail": 1}
-    assert vlm.determine_exit_code(report) == 1
+    assert vlm.determine_exit_code(report) == 0
 
 
 def test_build_report_counts_warning_from_retry_fallback():
@@ -270,17 +266,16 @@ def test_build_report_counts_warning_from_retry_fallback():
             unsupported_claims=[],
             evidence_sources=["README"],
             evidence_issues=["Gemini validation temporarily unavailable after 3 attempts (status 503); marked as warning and continued."],
-            mode="report",
         )
     ]
 
-    report = vlm.build_report(results, mode="report")
+    report = vlm.build_report(results)
 
     assert report["counts"] == {"pass": 0, "warning": 1, "fail": 0}
     assert vlm.determine_exit_code(report) == 0
 
 
-def test_main_report_mode_skips_without_api_key(monkeypatch):
+def test_main_skips_without_api_key(monkeypatch):
     tmp_dir = Path("reports") / "pytest_llm_tmp"
     if tmp_dir.exists():
         shutil.rmtree(tmp_dir)
@@ -289,9 +284,7 @@ def test_main_report_mode_skips_without_api_key(monkeypatch):
     summary = tmp_dir / "llm.md"
     monkeypatch.delenv("GEMINI_API_KEY", raising=False)
 
-    exit_code = vlm.main(
-        ["--mode", "report", "--output", str(output), "--summary-output", str(summary)]
-    )
+    exit_code = vlm.main(["--output", str(output), "--summary-output", str(summary)])
 
     assert exit_code == 0
     assert output.exists()
@@ -302,7 +295,6 @@ def test_main_report_mode_skips_without_api_key(monkeypatch):
 
 def test_render_actions_summary_contains_table():
     report = {
-        "mode": "report",
         "status": "completed",
         "skipped_reason": None,
         "counts": {"pass": 1, "warning": 1, "fail": 0},

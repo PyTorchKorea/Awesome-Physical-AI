@@ -7,8 +7,8 @@ evidence, asks Gemini for a structured JSON verdict, then writes a report
 consumable by pytest and GitHub Actions.
 
 Usage:
-  python scripts/validate_llm_metadata.py --mode report
-  python scripts/validate_llm_metadata.py --mode strict --output reports/llm.json
+  python scripts/validate_llm_metadata.py
+  python scripts/validate_llm_metadata.py --output reports/llm.json
 """
 
 from __future__ import annotations
@@ -89,7 +89,6 @@ class ValidationResult:
     unsupported_claims: list[str]
     evidence_sources: list[str]
     evidence_issues: list[str]
-    mode: str
 
 
 def load_yaml(path: Path) -> list[dict[str, Any]]:
@@ -236,9 +235,6 @@ class GeminiValidator:
         evidence: EvidenceBundle,
     ) -> dict[str, Any]:
         prompt = build_prompt(entry_type, entry, evidence)
-
-        print(f"DEBUG model: {self.model}")
-        print(f"DEBUG api key loaded: {bool(self.api_key)}, length={len(self.api_key)}")
 
         last_retryable_error: requests.HTTPError | None = None
 
@@ -429,7 +425,6 @@ def validate_entry(
     entry: dict[str, Any],
     fetcher: EvidenceFetcher,
     validator: GeminiValidator | MockGeminiValidator,
-    mode: str,
 ) -> ValidationResult:
     evidence = fetcher.fetch(entry)
     evidence_sources: list[str] = []
@@ -462,7 +457,6 @@ def validate_entry(
             unsupported_claims=[],
             evidence_sources=evidence_sources,
             evidence_issues=issues,
-            mode=mode,
         )
 
     return ValidationResult(
@@ -480,13 +474,11 @@ def validate_entry(
         unsupported_claims=llm_result["unsupported_claims"],
         evidence_sources=evidence_sources,
         evidence_issues=evidence.issues,
-        mode=mode,
     )
 
 
 def build_report(
     results: list[ValidationResult],
-    mode: str,
     skipped_reason: str | None = None,
 ) -> dict[str, Any]:
     counts = {"pass": 0, "warning": 0, "fail": 0}
@@ -494,7 +486,6 @@ def build_report(
         counts[result.final_verdict] += 1
 
     return {
-        "mode": mode,
         "status": "skipped" if skipped_reason else "completed",
         "skipped_reason": skipped_reason,
         "counts": counts,
@@ -506,7 +497,6 @@ def render_actions_summary(report: dict[str, Any]) -> str:
     lines = [
         "# LLM Metadata Validation",
         "",
-        f"- Mode: `{report['mode']}`",
         f"- Status: `{report['status']}`",
         f"- Pass: `{report['counts']['pass']}`",
         f"- Warning: `{report['counts']['warning']}`",
@@ -536,10 +526,6 @@ def render_actions_summary(report: dict[str, Any]) -> str:
 
 
 def determine_exit_code(report: dict[str, Any]) -> int:
-    if report["status"] == "skipped":
-        return 1 if report["mode"] == "strict" else 0
-    if report["mode"] == "strict" and report["counts"]["fail"] > 0:
-        return 1
     return 0
 
 
@@ -552,7 +538,6 @@ def write_report_files(report: dict[str, Any], output: Path, summary_output: Pat
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Validate tags and summaries with Gemini")
-    parser.add_argument("--mode", choices=["report", "strict"], default="report")
     parser.add_argument("--output", type=Path, default=DEFAULT_REPORT_PATH)
     parser.add_argument("--summary-output", type=Path, default=DEFAULT_SUMMARY_PATH)
     parser.add_argument("--mock-response-file", type=Path, default=None)
@@ -585,7 +570,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         api_key = os.getenv("GEMINI_API_KEY", "").strip()
         if not api_key:
-            report = build_report([], args.mode, skipped_reason="GEMINI_API_KEY is not configured")
+            report = build_report([], skipped_reason="GEMINI_API_KEY is not configured")
             write_report_files(report, args.output, args.summary_output)
             print(f"LLM validation skipped: {report['skipped_reason']}")
             return determine_exit_code(report)
@@ -593,14 +578,14 @@ def main(argv: list[str] | None = None) -> int:
 
     results: list[ValidationResult] = []
     for entry_type, entry in entries:
-        result = validate_entry(entry_type, entry, fetcher=fetcher, validator=validator, mode=args.mode)
+        result = validate_entry(entry_type, entry, fetcher=fetcher, validator=validator)
         results.append(result)
         print(
             f"[{result.final_verdict}] {result.entry_type}:{result.entry_id} "
             f"(tag={result.tag_score:.2f}, summary={result.summary_score:.2f})"
         )
 
-    report = build_report(results, args.mode)
+    report = build_report(results)
     write_report_files(report, args.output, args.summary_output)
     print(f"Report written to {args.output}")
     return determine_exit_code(report)
