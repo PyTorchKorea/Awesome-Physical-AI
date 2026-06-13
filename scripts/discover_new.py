@@ -333,7 +333,7 @@ def verify_hf_url(url: str) -> LinkCheck:
     gated = data.get("gated") not in (False, None, "false")
 
     status = "private_or_gated" if gated else "available"
-    if len(files) <= 1:
+    if not gated and len(files) <= 1:
         status = "placeholder"
     if any(pattern in card_text for pattern in UNOFFICIAL_PATTERNS):
         status = "unofficial"
@@ -486,8 +486,7 @@ def decide_recommendation_details(candidate: Candidate) -> tuple[str, list[str],
         reasons.append("verified model link and high Physical AI relevance")
         return "needs_review", reasons, "normal"
 
-    reasons.append("requires maintainer review")
-    return "needs_review", reasons, "normal"
+    raise ValueError(f"Unexpected relevance value: {candidate.relevance}")
 
 def decide_recommendation(candidate: Candidate) -> tuple[str, list[str]]:
     recommendation, reasons, _review_bucket = decide_recommendation_details(candidate)
@@ -534,8 +533,6 @@ def candidate_review_payload(candidate: Candidate) -> dict[str, Any]:
             "public-facing entry summary suitable for an Awesome-list item."
         ),
         "expected_json": {
-            "is_physical_ai": "boolean",
-            "is_official": "boolean",
             "has_verified_model_link": "boolean",
             "has_verified_artifact_link": "boolean",
             "entry_type": "model|dataset|tool|benchmark|simulator|paper_only|irrelevant|unclear",
@@ -865,8 +862,8 @@ def main() -> int:
         "--llm-review-command",
         help=(
             "Optional command that receives candidate JSON on stdin and returns one JSON object. "
-            "The returned JSON may include is_physical_ai, is_official, has_verified_model_link, "
-            "has_verified_artifact_link, entry_type, decision, entry_summary, maintainer_summary, and reason."
+            "The returned JSON may include has_verified_model_link, has_verified_artifact_link, "
+            "entry_type, decision, entry_summary, maintainer_summary, and reason."
         ),
     )
     args = parser.parse_args()
