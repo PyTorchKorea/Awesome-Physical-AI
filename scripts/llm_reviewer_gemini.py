@@ -26,8 +26,6 @@ DEFAULT_MODEL = "gemini-2.5-flash-lite"
 RESPONSE_SCHEMA = {
     "type": "object",
     "properties": {
-        "is_physical_ai": {"type": "boolean"},
-        "is_official": {"type": "boolean"},
         "has_verified_model_link": {"type": "boolean"},
         "has_verified_artifact_link": {"type": "boolean"},
         "entry_type": {
@@ -43,8 +41,6 @@ RESPONSE_SCHEMA = {
         "reason": {"type": "string"},
     },
     "required": [
-        "is_physical_ai",
-        "is_official",
         "has_verified_model_link",
         "has_verified_artifact_link",
         "entry_type",

@@ -732,6 +732,12 @@ def render_markdown(candidates: list[Candidate]) -> str:
         "",
         "This report is for maintainer review. No GitHub issues were created.",
         "",
+        (
+            "Rule-based link checks are the source of truth for artifact availability and verified links. "
+            "LLM link assessments are auxiliary annotations for maintainer review only and do not override "
+            "rule-based results."
+        ),
+        "",
         "| Recommendation | Count |",
         "|---|---:|",
     ]
@@ -784,18 +790,18 @@ def render_markdown(candidates: list[Candidate]) -> str:
         if candidate.artifact_availability:
             availability = candidate.artifact_availability
             lines.extend([
-                f"- Has verified model link: `{availability.get('has_verified_model_link', False)}`",
-                f"- Has verified artifact link: `{availability.get('has_verified_artifact_link', False)}`",
-                f"- Has verified project page: `{availability.get('has_verified_project_page', False)}`",
+                f"- Rule-based verified model link: `{availability.get('has_verified_model_link', False)}`",
+                f"- Rule-based verified artifact link: `{availability.get('has_verified_artifact_link', False)}`",
+                f"- Rule-based verified project page: `{availability.get('has_verified_project_page', False)}`",
             ])
         if candidate.llm_review:
             lines.append(f"- LLM review status: `{candidate.llm_review.get('status', 'unknown')}`")
             if candidate.llm_review.get("decision"):
                 lines.append(f"- LLM decision: `{candidate.llm_review.get('decision')}`")
             if "has_verified_model_link" in candidate.llm_review:
-                lines.append(f"- LLM has verified model link: `{candidate.llm_review.get('has_verified_model_link')}`")
+                lines.append(f"- LLM model-link annotation (reference only): `{candidate.llm_review.get('has_verified_model_link')}`")
             if "has_verified_artifact_link" in candidate.llm_review:
-                lines.append(f"- LLM has verified artifact link: `{candidate.llm_review.get('has_verified_artifact_link')}`")
+                lines.append(f"- LLM artifact-link annotation (reference only): `{candidate.llm_review.get('has_verified_artifact_link')}`")
             if candidate.llm_review.get("entry_type"):
                 lines.append(f"- LLM entry type: `{candidate.llm_review.get('entry_type')}`")
             if candidate.llm_review.get("reason"):
