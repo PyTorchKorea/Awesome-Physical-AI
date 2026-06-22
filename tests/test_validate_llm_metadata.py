@@ -317,4 +317,19 @@ def test_render_actions_summary_contains_table():
 
     assert "| Entry | Type | Verdict |" in summary
     assert "foo" in summary
+    assert "reason: Need more evidence" in summary
     assert "unsupported tags: rl" in summary
+
+
+def test_build_prompt_contains_readable_korean_instructions():
+    prompt = vlm.build_prompt(
+        "model",
+        _entry(description_ko="조작 정책 요약입니다."),
+        vlm.EvidenceBundle(readme_text="README evidence", abstract_text="Abstract evidence"),
+    )
+
+    assert "메타데이터를 검증하는 엄격한 검수자입니다." in prompt
+    assert "reason은 반드시 한국어로 작성하세요." in prompt
+    assert "README evidence:" in prompt
+    assert "Abstract evidence:" in prompt
+    

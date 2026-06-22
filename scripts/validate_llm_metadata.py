@@ -267,7 +267,9 @@ class GeminiValidator:
                 if response.status_code in RETRYABLE_STATUS_CODES:
                     last_retryable_error = exc
                     if attempt < MAX_GEMINI_RETRIES:
-                        backoff = RETRY_BACKOFF_SECONDS[min(attempt - 1, len(RETRY_BACKOFF_SECONDS) - 1)]
+                        backoff = RETRY_BACKOFF_SECONDS[
+                            min(attempt - 1, len(RETRY_BACKOFF_SECONDS) - 1)
+                        ]
                         print(
                             f"Retrying Gemini request for {entry.get('id', '<no-id>')} "
                             f"({attempt}/{MAX_GEMINI_RETRIES}) after {backoff:.1f}s"
@@ -507,17 +509,21 @@ def render_actions_summary(report: dict[str, Any]) -> str:
         lines.extend(["", f"- Skipped reason: {skipped_reason}"])
         return "\n".join(lines) + "\n"
 
-    lines.extend(["", "| Entry | Type | Verdict | Tag score | Summary score | Notes |", "|---|---|---|---:|---:|---|"])
+    lines.extend(
+        [
+            "",
+            "| Entry | Type | Verdict | Tag score | Summary score | Notes |",
+            "|---|---|---|---:|---:|---|",
+        ]
+    )
     for result in report["results"]:
-        notes: list[str] = []
+        notes: list[str] = [f"reason: {result['reason']}"]
         if result["unsupported_tags"]:
             notes.append("unsupported tags: " + ", ".join(result["unsupported_tags"]))
         if result["unsupported_claims"]:
             notes.append("unsupported claims: " + ", ".join(result["unsupported_claims"]))
         if result["evidence_issues"]:
             notes.append("evidence issues: " + "; ".join(result["evidence_issues"]))
-        if not notes:
-            notes.append(result["reason"])
         lines.append(
             f"| {result['entry_id']} | {result['entry_type']} | {result['final_verdict']} "
             f"| {result['tag_score']:.2f} | {result['summary_score']:.2f} | {' / '.join(notes)} |"
