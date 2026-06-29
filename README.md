@@ -4,10 +4,10 @@
 > A curated list of open-source models, datasets, and simulators for Physical AI (Robotics & Embodied AI).
 
 [![Models](https://img.shields.io/badge/Models-14-blue)](https://pytorchkorea.github.io/Awesome-Physical-AI)
-[![Datasets](https://img.shields.io/badge/Datasets-10-green)](https://pytorchkorea.github.io/Awesome-Physical-AI)
+[![Datasets](https://img.shields.io/badge/Datasets-11-green)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 [![Simulators](https://img.shields.io/badge/Simulators-9-purple)](https://pytorchkorea.github.io/Awesome-Physical-AI)
-[![Organizations](https://img.shields.io/badge/Organizations-29-orange)](https://pytorchkorea.github.io/Awesome-Physical-AI)
-[![Updated](https://img.shields.io/badge/Updated-2026-06-22-lightgrey)](https://github.com/PyTorchKorea/Awesome-Physical-AI)
+[![Organizations](https://img.shields.io/badge/Organizations-30-orange)](https://pytorchkorea.github.io/Awesome-Physical-AI)
+[![Updated](https://img.shields.io/badge/Updated-2026-06-29-lightgrey)](https://github.com/PyTorchKorea/Awesome-Physical-AI)
 [![Dashboard](https://img.shields.io/badge/🌐_Dashboard-Live-brightgreen)](https://pytorchkorea.github.io/Awesome-Physical-AI)
 
 > **[👉 인터랙티브 대시보드에서 필터링 및 시각화 보기 | View Interactive Dashboard](https://pytorchkorea.github.io/Awesome-Physical-AI)**
@@ -63,6 +63,7 @@
 | [Language-Table](https://github.com/google-research/language-table) | Google | 2023 | manipulation | real, simulation, teleoperation | rgb, proprioception | 600,000 | 360 | [📄](https://arxiv.org/abs/2210.01911) [🤗](https://huggingface.co/datasets/google/language_table) |
 | [BridgeData V2](https://github.com/rail-berkeley/bridge_data_v2) | UC Berkeley | 2023 | manipulation | real, teleoperation | rgb, proprioception | 60,096 | 282 | [📄](https://arxiv.org/abs/2308.12952) [🤗](https://huggingface.co/datasets/rail-berkeley/bridge_orig) |
 | [RH20T](https://github.com/rh20t/rh20t_api) | Shanghai AI Lab | 2023 | manipulation, dexterous | real, teleoperation | rgb, rgbd, tactile, proprioception, audio | 110,000 | 108 | [📄](https://arxiv.org/abs/2307.00595)  |
+| [BEHAVIOR-1K](https://github.com/StanfordVL/BEHAVIOR-1K) | Stanford Vision and Learning Lab | 2024 | manipulation, navigation | simulation, teleoperation, human_demo | rgb, depth, proprioception | 10,000 | 0 | [📄](https://arxiv.org/abs/2403.09227) [🤗](https://huggingface.co/behavior-1k) |
 
 ---
 
